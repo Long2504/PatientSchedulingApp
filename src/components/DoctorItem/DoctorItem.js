@@ -8,8 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import Button from '../Button';
 
 
-const DoctorItem = ({ doctor }) => {
-  const navigation = useNavigation();
+const DoctorItem = ({ doctor, handleClickDoctor }) => {
   return (
     <View style={styles.container}>
       <View>
@@ -25,7 +24,7 @@ const DoctorItem = ({ doctor }) => {
         <Button
           primary
           title={'Đặt lịch khám'}
-          onPress={() => navigation.navigate('AppointmentDetail', { id: 0 })}
+          onPress={() => handleClickDoctor()}
         />
       </View>
     </View>

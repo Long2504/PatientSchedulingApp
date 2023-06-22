@@ -1,9 +1,14 @@
-import React, {Fragment, useState} from 'react';
+import React, { Fragment, useState } from 'react';
 import AppHeader from '../../components/AppHeader/AppHeader';
-import {Colors} from '../../constants';
-import {View} from 'react-native';
-import {Dropdown} from 'react-native-element-dropdown';
-import {styles} from './Doctor.styles';
+import { Colors } from '../../constants';
+import { Dropdown } from 'react-native-element-dropdown';
+import { styles } from './Doctor.styles';
+import { View, FlatList } from 'react-native';
+import DoctorItem from '../../components/DoctorItem/DoctorItem';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAllDoctor } from '../../redux/action/doctor.action';
+import { useEffect } from 'react';
+
 
 const departments = [
   {
@@ -38,9 +43,19 @@ const departments = [
   },
 ];
 const Doctor = () => {
+
+  const handleClickDoctor = (item) => {
+    dispatch(setSpeciality({ doctorID: item._id, doctorName: item.name }));
+    navigation.goBack();
+  }
   const [isFocus, setIsFocus] = useState(false);
   const [speciality, setSpeciality] = useState(false);
-  const handleGetSpeciality = () => {};
+  const handleGetSpeciality = () => { };
+  const { listDoctor } = useSelector((state) => state.doctorSlice);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAllDoctor());
+  }, []);
   return (
     <Fragment>
       <AppHeader
@@ -50,9 +65,9 @@ const Doctor = () => {
         headerBg={Colors.DEFAULT_CORLOR}
         iconColor={Colors.WHITE}
       />
-      <View style={{backgroundColor: '#fff', padding: 20, borderRadius: 15}}>
+      <View style={{ backgroundColor: '#fff', padding: 20, borderRadius: 15 }}>
         <Dropdown
-          style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
+          style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
@@ -74,6 +89,11 @@ const Doctor = () => {
           }}
         />
       </View>
+      <FlatList
+        data={listDoctor}
+        renderItem={item => <DoctorItem doctor={item.item} handleClickDoctor={handleClickDoctor(item)} />}
+        keyExtractor={item => item.id}
+      />
     </Fragment>
   );
 };

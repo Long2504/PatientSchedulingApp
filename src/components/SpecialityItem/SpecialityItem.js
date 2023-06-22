@@ -3,14 +3,14 @@ import { styles } from './SpecialityItem.style';
 import React, { useState } from 'react';
 import Modal from 'react-native-modal';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-const SpecialityItem = ({ specialty }) => {
+const SpecialityItem = ({ specialty, handleClickSpecialty }) => {
   const [isModalVisible, setModalVisible] = useState(false);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={() => handleClickSpecialty()}>
       <Text>{specialty.name}</Text>
       <Text numberOfLines={2} ellipsizeMode="tail">{specialty.description}</Text>
 
@@ -21,7 +21,7 @@ const SpecialityItem = ({ specialty }) => {
           <TouchableOpacity title="Close" onPress={toggleModal} />
         </View>
       </Modal>
-    </View>
+    </TouchableOpacity>
   );
 
 

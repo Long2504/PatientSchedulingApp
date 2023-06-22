@@ -5,8 +5,14 @@ const initialState = {
   loading: false,
   listSchedule: [],
   error: null,
-  specialityID: null,
-  doctorID: null,
+  speciality: {
+    specialityID: null,
+    specialityName: null,
+  },
+  doctor: {
+    doctorID: null,
+    doctorName: null,
+  },
   appointmentDate: null,
 };
 
@@ -15,11 +21,11 @@ export const scheduleSlice = createSlice({
   name: 'schedule',
   initialState,
   reducers: {
-    setSpecialityID: (state, { payload }) => {
-      state.specialityID = payload;
+    setSpeciality: (state, { payload }) => {
+      state.speciality = payload;
     },
-    setDoctorID: (state, { payload }) => {
-      state.doctorID = payload;
+    setDoctor: (state, { payload }) => {
+      state.doctor = payload;
     },
   },
   extraReducers: builder => {
@@ -41,5 +47,5 @@ export const scheduleSlice = createSlice({
 );
 
 
-export const { setSpecialityID, setDoctorID } = scheduleSlice.actions;
+export const { setSpeciality, setDoctor } = scheduleSlice.actions;
 export default scheduleSlice.reducer;

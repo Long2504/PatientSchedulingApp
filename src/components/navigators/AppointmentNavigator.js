@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
 import Appointment from '../../screens/Appointment/Appointment';
 import SpecialityScreen from '../../screens/Doctor/SpecialityScreen';
+import Doctor from '../../screens/Doctor/Doctor';
 function AppointmentNavigator() {
   return (
     <Stack.Navigator>
@@ -13,6 +14,11 @@ function AppointmentNavigator() {
       <Stack.Screen
         name="Speciality"
         component={SpecialityScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Doctor"
+        component={Doctor}
         options={{ headerShown: false }}
       />
 

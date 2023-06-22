@@ -52,7 +52,7 @@ const LoginScreen = ({ navigation: { navigate } }) => {
   const dispath = useDispatch();
 
   const handleLogin = () => {
-    dispath(Login({ username: "doctor1", password: "1" }))
+    dispath(Login({ username: "long", password: "1" }))
     // const checkPassowrd = checkPasswordValidity(password);
     // if (!checkPassowrd) {
     //   Alert.alert('Thông báo', 'OK');

@@ -7,13 +7,17 @@ import Colors from '../../constants/Colors';
 import { View, ScrollView } from "react-native";
 import { Fragment } from "react";
 import SpecialityItem from "../../components/SpecialityItem/SpecialityItem";
+import { setSpeciality } from "../../redux/slice/schedule.slice";
 
 
 
-
-function SpecialityScreen() {
+function SpecialityScreen({ navigation }) {
   const dispatch = useDispatch()
   const { listSpecialty } = useSelector((state) => state.doctorSlice);
+  const handleClickSpecialty = (item) => {
+    dispatch(setSpeciality({ specialityID: item._id, specialityName: item.name }));
+    navigation.goBack();
+  }
   useEffect(() => {
     dispatch(getAllSpecialty())
   }, []);
@@ -42,7 +46,7 @@ function SpecialityScreen() {
             <SpecialityItem
               key={index}
               specialty={item}
-            // onPress={() => handleSpecialty(item.id)}
+              handleClickSpecialty={() => handleClickSpecialty(item)}
             />
           ))}
         </ScrollView>

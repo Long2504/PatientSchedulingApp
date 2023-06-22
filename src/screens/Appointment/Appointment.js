@@ -6,13 +6,13 @@ import { useState } from 'react';
 import moment from 'moment';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useSelector } from 'react-redux';
 
 const Appointment = ({ navigation: { navigate } }) => {
 
-  const [method, setMethod] = useState('');
-  const handleSelectMethod = (method) => {
-    setMethod(method);
-  };
+  const { speciality, doctor } = useSelector(state => state.scheduleSlice);
+  console.log(speciality, "speciality");
+
   const dayTomorrow = moment().add(1, 'days').format('dddd');
   const dateTomorrow = moment().add(1, 'days').format('DD');
   const monthTomorrow = moment().add(1, 'days').format('M');
@@ -20,18 +20,7 @@ const Appointment = ({ navigation: { navigate } }) => {
   const dateAfterTomorrow = moment().add(2, 'days').format('DD');
   const monthAfterTomorrow = moment().add(2, 'days').format('M');
 
-  const date = "2012-03-29"
-  // format date
-  const formattedDate = moment(date).format('DD-MM-YYYY')
 
-  const handleSelectedMethod = () => {
-    if (method === 'Chọn bác sĩ') {
-      navigate('Doctor');
-    } else if (method === 'Chọn khoa') {
-      navigate('Speciality');
-    }
-  };
-  const [clickDate, setClickDate] = useState(0);
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState([]);
 
@@ -39,7 +28,6 @@ const Appointment = ({ navigation: { navigate } }) => {
     setSelectedDate([moment(date).format('dddd'), moment(date).format('DD'), moment(date).format('MM')]);
     setModalVisible(false);
   };
-  console.log(selectedDate);
   function renderModal() {
     return (
       <Modal visible={isModalVisible}
@@ -76,11 +64,12 @@ const Appointment = ({ navigation: { navigate } }) => {
         <View>
           <Text>Phương thức</Text>
           <View style={styles.methodExamination}>
-            <Button title="Chọn bác sĩ" style={{ borderWidth: 1, padding: 3 }} onPress={() => handleSelectMethod('Chọn bác sĩ')} />
-            <Button title="Chọn khoa" style={{ borderWidth: 1, padding: 3 }} onPress={() => handleSelectMethod('Chọn khoa')} />
+            <Button title="Chọn bác sĩ" style={{ borderWidth: 1, padding: 3 }} onPress={() => navigate('Doctor')} />
+            <Button title="Chọn khoa" style={{ borderWidth: 1, padding: 3 }} onPress={() => navigate('Speciality')} />
           </View>
           <View>
-            <Button title={method} style={{ borderWidth: 1, padding: 3 }} onPress={() => handleSelectedMethod()} />
+            {speciality && <Button title={speciality.specialityName} style={{ borderWidth: 1, padding: 3 }} />}
+            {doctor && <Button title={doctor.doctorName} style={{ borderWidth: 1, padding: 3 }} />}
           </View>
         </View>
         <View>
@@ -121,6 +110,10 @@ const Appointment = ({ navigation: { navigate } }) => {
               <Text>Ngày khác</Text>
             </TouchableOpacity>
           </View>
+        </View>
+        <View>
+          <Text>Giờ khám mong muốn</Text>
+
         </View>
       </View>
       {renderModal()}
