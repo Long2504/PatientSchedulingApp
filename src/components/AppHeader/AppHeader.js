@@ -1,15 +1,15 @@
 import React from 'react';
-import {View, TouchableOpacity} from 'react-native';
-import {Badge, Surface, Title} from 'react-native-paper';
+import { View, TouchableOpacity } from 'react-native';
+import { Badge, Surface, Title } from 'react-native-paper';
 import Feather from 'react-native-vector-icons/Feather';
-import {styles} from './AppHeader.styles';
-import {useNavigation} from '@react-navigation/native';
+import { styles } from './AppHeader.styles';
+import { useNavigation } from '@react-navigation/native';
 
 const IconSize = 24;
-const LeftView = ({menu, back, iconColor, backFunc}) => (
+const LeftView = ({ menu, back, iconColor, backFunc }) => (
   <View style={styles.view}>
     {menu && (
-      <TouchableOpacity onPress={() => {}}>
+      <TouchableOpacity onPress={() => { }}>
         <Feather name="menu" size={IconSize} color={iconColor} />
       </TouchableOpacity>
     )}
@@ -46,9 +46,9 @@ const RightView = ({
       )}
     </View>
   );
-const TitleView = ({iconColor, titleAlight, title}) => (
+const TitleView = ({ iconColor, titleAlight, title }) => (
   <View style={styles.titleView}>
-    <Title style={{color: iconColor, textAlign: titleAlight}}>{title}</Title>
+    <Title style={{ color: iconColor, textAlign: titleAlight }}>{title}</Title>
   </View>
 );
 const AppHeader = ({
@@ -69,7 +69,7 @@ const AppHeader = ({
   const navigation = useNavigation();
 
   return (
-    <Surface style={[styles.header, style, {backgroundColor: headerBg}]}>
+    <Surface style={[styles.header, style, { backgroundColor: headerBg }]}>
       <LeftView
         menu={menu}
         back={back}

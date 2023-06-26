@@ -1,11 +1,8 @@
 import React, { useEffect } from 'react';
-import { Text, Image } from 'react-native';
-// import AppNavigator from './src/AppNavigator';
 import { useDispatch, useSelector } from 'react-redux';
 import { checkLogged } from './src/redux/action/auth.action';
 import { NavigationContainer } from '@react-navigation/native';
 import LoginScreen from './src/screens/Login/LoginScreen';
-import Register from './src/screens/Register/Register';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from "react-redux";
 import store from './src/redux/index.redux';
@@ -13,6 +10,8 @@ import { PaperProvider } from 'react-native-paper';
 import DrawerNavigator from './src/components/navigators/DrawerNavigator';
 import 'react-native-gesture-handler';
 import moment from 'moment';
+import VerifyScreen from './src/screens/verify/VerifyScreen';
+import RegisterScreen from './src/screens/Register/RegisterScreen';
 
 const App = () => {
   return (
@@ -39,6 +38,7 @@ const AppNavigator = () => {
     dispath(checkLogged())
   }, []);
 
+
   return (
     <NavigationContainer>
       {
@@ -50,8 +50,13 @@ const AppNavigator = () => {
               options={{ headerShown: false }}
             />
             <Stack.Screen
-              component={Register}
-              name="Register"
+              component={RegisterScreen}
+              name="RegisterScreen"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              component={VerifyScreen}
+              name="VerifyScreen"
               options={{ headerShown: false }}
             />
           </Stack.Navigator>

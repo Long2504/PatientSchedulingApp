@@ -1,15 +1,15 @@
-import React, {useState} from 'react';
-import {StyleSheet, TextInput} from 'react-native';
-import {Colors, Fonts} from '../constants';
+import React, { useState } from 'react';
+import { StyleSheet, TextInput } from 'react-native';
+import { Colors, Fonts } from '../constants';
 
-const MyTextInput = ({...otherProps}) => {
+const MyTextInput = ({ style, ...otherProps }) => {
   const [focused, setFocused] = useState(false);
   return (
     <TextInput
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
       placeholderTextColor={Colors.BLACK}
-      style={[styles.input, focused && styles.focused]}
+      style={[styles.input, focused && styles.focused, style]}
       {...otherProps}
     />
   );
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   focused: {
     borderWidth: 1,
     borderColor: Colors.DEFAULT_CORLOR,
-    shadowOffset: {width: 4, height: 10},
+    shadowOffset: { width: 4, height: 10 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
   },

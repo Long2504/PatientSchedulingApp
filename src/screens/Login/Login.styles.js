@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {Colors, Fonts} from '../../constants';
+import { StyleSheet } from 'react-native';
+import { Colors, Fonts } from '../../constants';
 
 export const styles = StyleSheet.create({
   spaceBottom: {
@@ -33,6 +33,7 @@ export const styles = StyleSheet.create({
   wrapperInput: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: 30,
   },
   wrapperIcon: {
     position: 'absolute',
@@ -43,6 +44,8 @@ export const styles = StyleSheet.create({
     fontSize: Fonts.X_SMALL,
     alignSelf: 'flex-end',
     color: 'red',
+    marginTop: 5,
+    marginBottom: 10,
   },
   other: {
     flex: 1,
@@ -61,5 +64,20 @@ export const styles = StyleSheet.create({
     marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'center',
+  },
+  textError: {
+    color: 'red',
+    marginTop: 5,
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  btnForgot: {
+    marginTop: 10,
+  },
+  btnConfirm: {
+    marginTop: 50,
+  },
+  btnRegister: {
+    marginTop: 25,
   },
 });

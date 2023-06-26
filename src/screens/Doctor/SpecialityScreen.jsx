@@ -5,7 +5,6 @@ import MyTextInput from '../../components/MyTextInput';
 import AppHeader from "../../components/AppHeader/AppHeader";
 import Colors from '../../constants/Colors';
 import { View, ScrollView } from "react-native";
-import { Fragment } from "react";
 import SpecialityItem from "../../components/SpecialityItem/SpecialityItem";
 import { setSpeciality } from "../../redux/slice/schedule.slice";
 
@@ -16,7 +15,7 @@ function SpecialityScreen({ navigation }) {
   const { listSpecialty } = useSelector((state) => state.doctorSlice);
   const handleClickSpecialty = (item) => {
     dispatch(setSpeciality({ specialityID: item._id, specialityName: item.name }));
-    navigation.goBack();
+    navigation.navigate('Doctor');
   }
   useEffect(() => {
     dispatch(getAllSpecialty())

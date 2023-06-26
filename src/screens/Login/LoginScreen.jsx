@@ -5,7 +5,7 @@ import { styles } from './Login.styles';
 import Button from '../../components/Button';
 import { Colors } from '../../constants';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Login } from '../../redux/action/auth.action';
 const LoginScreen = ({ navigation: { navigate } }) => {
   const [email, setEmail] = useState('');
@@ -14,6 +14,8 @@ const LoginScreen = ({ navigation: { navigate } }) => {
   const [checkValidEmail, setCheckValidEmail] = useState(false);
 
   const handleCheckEmail = e => {
+    setUser({ ...user, "username": e })
+    console.log(e);
     let re = /\S+@\S+\.\S+/;
     let regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
 
@@ -49,16 +51,22 @@ const LoginScreen = ({ navigation: { navigate } }) => {
     return null;
   };
 
+  const { error, isLoading } = useSelector(state => state.authSlice)
+  const [user, setUser] = useState({ username: '', password: '' });
+
   const dispath = useDispatch();
 
   const handleLogin = () => {
-    dispath(Login({ username: "long", password: "1" }))
-    // const checkPassowrd = checkPasswordValidity(password);
-    // if (!checkPassowrd) {
-    //   Alert.alert('Thông báo', 'OK');
-    // } else {
-    //   Alert.alert('Thông báo', checkPassowrd);
-    // }
+    if (!user.password || !user.username) {
+      Alert.alert('Thông báo', 'Vui lòng điền tên đăng nhập và mật khẩu');
+    } else {
+      dispath(Login(user))
+    }
+  };
+
+  const handleErrors = () => {
+    if (!error.statusCode) return null;
+    return <Text style={styles.textError}>Tên đăng nhập hoặc mật khẩu không đúng</Text>
   };
 
   return (
@@ -73,23 +81,19 @@ const LoginScreen = ({ navigation: { navigate } }) => {
         <View>
           <View style={styles.wrapperInput}>
             <MyTextInput
-              placeholder="Email"
-              keyboardType="email-address"
-              value={email}
-            // onChangeText={e => handleCheckEmail(e)}
+              name="username"
+              placeholder="Tên đăng nhập"
+              onChangeText={e => setUser({ ...user, "username": e })}
+              style={styles.inputItem}
             />
           </View>
-          {checkValidEmail ? (
-            <Text style={styles.textFailed}>Email không hợp lệ</Text>
-          ) : (
-            <Text style={styles.textFailed}> </Text>
-          )}
           <View style={styles.wrapperInput}>
             <MyTextInput
               placeholder="Mật khẩu"
-              value={password}
               secureTextEntry={seePassword}
-            // onChangeText={e => setPassword(e)}
+              name="password"
+              onChangeText={e => setUser({ ...user, "password": e })}
+              style={styles.inputItem}
             />
             <View style={styles.wrapperIcon}>
               <Button
@@ -99,8 +103,8 @@ const LoginScreen = ({ navigation: { navigate } }) => {
                     size={20}
                     color={Colors.BLACK}
                   />
-                }
-              // onPress={() => setSeePassword(!seePassword)}
+                } asd
+                onPress={() => setSeePassword(!seePassword)}
               />
             </View>
           </View>
@@ -109,25 +113,27 @@ const LoginScreen = ({ navigation: { navigate } }) => {
           textAlign={'right'}
           title={'Bạn quên mật khẩu?'}
           textColor={Colors.GREEN}
-          style={styles.spaceBottom}
+          style={styles.btnForgot}
         />
-        <View style={styles.spaceBottom}>
-          {email === '' || password === '' || checkValidEmail === true ? (
-            <Button
-              primary
-              title={'Đăng nhập'}
-              // disabled
-              onPress={() => handleLogin()}
-            />
-          ) : (
-            <Button primary title={'Đăng nhập'} onPress={() => handleLogin()} />
-          )}
+        <View style={styles.btnConfirm}>
+          {
+            handleErrors()
+          }
+          <Button
+            primary
+            title={'ĐĂNG NHẬP'}
+            onPress={() => handleLogin()}
+            disabled={isLoading}
+          />
+
         </View>
         <Button
+
           title={'Tạo tài khoản mới'}
-          onPress={() => navigate('Register')}
+          onPress={() => navigate('RegisterScreen')}
+          style={styles.btnRegister}
         />
-        <View style={styles.other}>
+        {/* <View style={styles.other}>
           <Text style={styles.otherContent}>Hoặc đăng nhập với</Text>
           <View style={styles.iconGroup}>
             <Button
@@ -139,7 +145,7 @@ const LoginScreen = ({ navigation: { navigate } }) => {
               icon
             />
           </View>
-        </View>
+        </View> */}
       </View>
     </SafeAreaView>
   );

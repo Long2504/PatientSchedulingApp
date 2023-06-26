@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getAllDoctor, getAllSpecialty } from '../action/doctor.action';
+import { getAllDoctor, getAllDoctorBySpecialty, getAllSpecialty } from '../action/doctor.action';
 
 const initialState = {
   loading: false,
@@ -26,6 +26,21 @@ export const doctorSlice = createSlice({
       state.loading = false;
       state.listDoctor = [];
     });
+    builder.addCase(getAllDoctorBySpecialty.pending, (state) => {
+      state.loading = true;
+      state.listDoctor = [];
+    });
+    builder.addCase(getAllDoctorBySpecialty.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.listDoctor = payload;
+    }
+    );
+    builder.addCase(getAllDoctorBySpecialty.rejected, (state, { payload }) => {
+      state.error = payload;
+      state.loading = false;
+      state.listDoctor = [];
+    }
+    );
     builder.addCase(getAllSpecialty.pending, (state) => {
       state.loading = true;
       state.listSpecialty = [];

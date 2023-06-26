@@ -15,6 +15,7 @@ const Button = ({
   borderRadius,
   height,
   width,
+  style,
   ...otherProps
 }) => {
   return (
@@ -29,6 +30,7 @@ const Button = ({
         width && { width: width },
         height && { height: height },
         borderRadius && { borderRadius: borderRadius },
+        style,
       ]}
       {...otherProps}>
       <Text

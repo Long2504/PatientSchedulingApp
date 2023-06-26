@@ -8,18 +8,22 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { Colors } from '../../constants';
+import MedicalRecordNavigator from './MedicalRecordNavigator';
 const Tab = createBottomTabNavigator();
 function BottomTab() {
   const styles = {
     size: 25,
-    activeColor: '#0C7FDA',
-    inactiveColor: 'rgba(34, 41, 124, 0.6)',
+    activeColor: '#00867E',
+    inactiveColor: '#A6A6A6',
+    barActiveBgrColor: '#fff',
   };
   const insets = useSafeAreaInsets();
 
   return (
     <Tab.Navigator
+      tabBarOptions={{
+        keyboardHidesTabBar: true
+      }}
       screenOptions={{
         tabBarStyle: {
           borderTopLeftRadius: 10,
@@ -34,8 +38,8 @@ function BottomTab() {
         tabBarIconStyle: {
           marginTop: 5,
         },
-        tabBarActiveBackgroundColor: '#ECF2FF',
-        tabBarActiveTintColor: '#0C7FDA',
+        tabBarActiveBackgroundColor: styles.barActiveBgrColor,
+        tabBarActiveTintColor: styles.activeColor,
         headerShown: false,
       }}
     >
@@ -43,11 +47,12 @@ function BottomTab() {
         name="Home"
         component={Home}
         options={{
+          tabBarLabel: "Trang chủ",
           tabBarIcon: ({ focused }) => (
             <AntDesign
               name={'home'}
               size={styles.size}
-              color={focused ? Colors.DEFAULT_CORLOR : ''}
+              color={focused ? styles.activeColor : styles.inactiveColor}
             />
           ),
         }}
@@ -56,24 +61,26 @@ function BottomTab() {
         name="Appointment"
         component={AppointmentNavigator}
         options={{
+          tabBarLabel: "Đặt lịch",
           tabBarIcon: ({ focused }) => (
             <Ionicons
               name="calendar"
               size={styles.size}
-              color={focused ? Colors.DEFAULT_CORLOR : ''}
+              color={focused ? styles.activeColor : styles.inactiveColor}
             />
           ),
         }}
       />
       <Tab.Screen
         name="MedicalRecord"
-        component={MedicalRecord}
+        component={MedicalRecordNavigator}
         options={{
+          tabBarLabel: "Bệnh án",
           tabBarIcon: ({ focused }) => (
             <FontAwesome5
               name="file-medical"
               size={styles.size}
-              color={focused ? Colors.DEFAULT_CORLOR : ''}
+              color={focused ? styles.activeColor : styles.inactiveColor}
             />
           ),
         }}
@@ -82,11 +89,12 @@ function BottomTab() {
         name="Profile"
         component={Profile}
         options={{
+          tabBarLabel: "Hồ sơ",
           tabBarIcon: ({ focused }) => (
             <FontistoIcon
               name={'doctor'}
               size={styles.size}
-              color={focused ? Colors.DEFAULT_CORLOR : ''}
+              color={focused ? styles.activeColor : styles.inactiveColor}
             />
           ),
         }}

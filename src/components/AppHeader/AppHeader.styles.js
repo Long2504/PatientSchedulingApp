@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {Colors} from '../../constants';
+import { StyleSheet } from 'react-native';
+
 
 export const styles = StyleSheet.create({
   header: {
@@ -25,5 +25,5 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 10,
   },
-  badge: {position: 'absolute', top: -5, right: -10},
+  badge: { position: 'absolute', top: -5, right: -10 },
 });

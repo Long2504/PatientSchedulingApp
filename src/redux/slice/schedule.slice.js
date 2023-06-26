@@ -1,18 +1,12 @@
-import { getScheduleBySpeciality } from "../action/schedule.action";
+import { getScheduleBySpeciality, getScheduleByDoctor, createAppointmentSchedule } from "../action/schedule.action";
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   loading: false,
   listSchedule: [],
   error: null,
-  speciality: {
-    specialityID: null,
-    specialityName: null,
-  },
-  doctor: {
-    doctorID: null,
-    doctorName: null,
-  },
+  speciality: {},
+  doctor: {},
   appointmentDate: null,
 };
 
@@ -42,6 +36,36 @@ export const scheduleSlice = createSlice({
       state.loading = false;
       state.listSchedule = [];
     });
+    builder.addCase(getScheduleByDoctor.pending, (state) => {
+      state.loading = true;
+      state.listSchedule = [];
+    });
+    builder.addCase(getScheduleByDoctor.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.listSchedule = payload;
+    }
+    );
+    builder.addCase(getScheduleByDoctor.rejected, (state, { payload }) => {
+      state.error = payload;
+      state.loading = false;
+      state.listSchedule = [];
+    }
+    );
+    builder.addCase(createAppointmentSchedule.pending, (state) => {
+      state.loading = true;
+    }
+    );
+    builder.addCase(createAppointmentSchedule.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.appointmentDate = payload;
+    }
+    );
+    builder.addCase(createAppointmentSchedule.rejected, (state, { payload }) => {
+      state.error = payload.error;
+      state.loading = false;
+      state.appointmentDate = null;
+    }
+    );
   }
 }
 );

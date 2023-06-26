@@ -12,6 +12,7 @@ import { Logout } from '../../redux/action/auth.action';
 import LinearGradient from 'react-native-linear-gradient';
 import React, { useState } from 'react';
 import { drawerItemStyles as styles } from "./customDrawerItem.styles";
+import { Colors } from '../../constants';
 
 
 function CustomDrawerContent(props) {
@@ -24,7 +25,7 @@ function CustomDrawerContent(props) {
     <DrawerContentScrollView {...props}>
       <View>
         <LinearGradient
-          colors={['#22297C', '#4CA2E7']}
+          colors={[Colors.DEFAULT_CORLOR, '#4CA2E7']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           style={styles.header}

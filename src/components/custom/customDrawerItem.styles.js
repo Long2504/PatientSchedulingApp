@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export const drawerItemStyles = StyleSheet.create({
   drawerStyle: {
@@ -38,7 +38,7 @@ export const drawerItemStyles = StyleSheet.create({
     borderRadius: 20,
     marginTop: 20,
   },
-  drawerTitle: {fontWeight: 'bold', color: '#000', marginLeft: 5},
+  drawerTitle: { fontWeight: 'bold', color: '#000', marginLeft: 5 },
   drawerLable: {
     flexDirection: 'row',
     alignItems: 'center',

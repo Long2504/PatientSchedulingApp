@@ -5,19 +5,25 @@ import { styles } from './Register.styles';
 import Button from '../../components/Button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Colors } from '../../constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { Register } from '../../redux/action/auth.action';
 
-const Register = ({ navigation: { navigate } }) => {
+const RegisterScreen = ({ navigation: { navigate } }) => {
+  const dispatch = useDispatch();
   const [account, setAccount] = useState({
     email: '',
-    name: '',
-    phone: '',
+    username: '',
     password: '',
   });
+  const { error, isLoading } = useSelector(state => state.authSlice);
+
+
+
   const [rePassword, setRePassword] = useState('');
   const [seePassword, setSeePassword] = useState(true);
   const [seeRePassword, setSeeRePassword] = useState(true);
   const [checkValidEmail, setCheckValidEmail] = useState(false);
-  const [checkValidPhone, setCheckValidPhone] = useState(false);
+
   const [checkValidRePass, setCheckValidRePass] = useState(false);
 
   const handleCheckEmail = e => {
@@ -55,6 +61,7 @@ const Register = ({ navigation: { navigate } }) => {
     }
     return null;
   };
+
   const checkPhoneValidity = value => {
     setAccount({ ...account, phone: value });
     if (value.length !== 10) {
@@ -62,6 +69,7 @@ const Register = ({ navigation: { navigate } }) => {
     }
     return setCheckValidPhone(false);
   };
+
   const handleCheckRePass = value => {
     setRePassword(value);
     if (value !== account.password) {
@@ -69,13 +77,47 @@ const Register = ({ navigation: { navigate } }) => {
     }
     return setCheckValidRePass(false);
   };
+
   const handleRegister = () => {
-    const checkPassowrd = checkPasswordValidity(account.password);
-    if (!checkPassowrd) {
-      Alert.alert('Thông báo', 'OK');
-    } else {
-      Alert.alert('Thông báo', checkPassowrd);
+    if (!account.email || !account.username || !account.password || !rePassword) {
+      Alert.alert('Thông báo', 'Vui lòng nhập đầy đủ thông tin');
+      return;
     }
+    if (account.password !== rePassword) {
+      Alert.alert('Thông báo', 'Mật khẩu không trùng khớp');
+      return;
+    }
+    if (checkValidEmail) {
+      Alert.alert('Thông báo', 'Email không hợp lệ');
+      return;
+    }
+    dispatch(Register(account)).then(() => {
+      console.log(error, "error");
+      console.log(account, "account")
+      if (error.statusCode) {
+        console.log(error.statusCode, "error.statusCode");
+        if (error.statusCode === 400) {
+          Alert.alert('Thông báo', "Tên đăng nhập hoặc email đã tồn tại");
+          return;
+        }
+        return;
+      };
+      console.log("ok");
+      navigate('VerifyScreen');
+      console.log("not ok");
+    }).catch((err) => {
+      Alert.alert('Thông báo', err);
+    });
+
+
+    // navigate('VerifyScreen');
+    // const checkPassowrd = checkPasswordValidity(account.password);
+    // if (!checkPassowrd) {
+    //   Alert.alert('Thông báo', 'OK');
+
+    // } else {
+    //   Alert.alert('Thông báo', checkPassowrd);
+    // }
   };
 
   return (
@@ -100,12 +142,12 @@ const Register = ({ navigation: { navigate } }) => {
           )}
           <View style={[styles.wrapperInput, styles.spaceBottom]}>
             <MyTextInput
-              placeholder="Họ và tên"
-              value={account.name}
-              onChangeText={e => setAccount({ ...account, name: e })}
+              placeholder="Tên đăng nhập"
+              value={account.username}
+              onChangeText={e => setAccount({ ...account, username: e })}
             />
           </View>
-          <View style={styles.wrapperInput}>
+          {/* <View style={styles.wrapperInput}>
             <MyTextInput
               placeholder="Số điện thoại"
               keyboardType="phone-pad"
@@ -117,7 +159,7 @@ const Register = ({ navigation: { navigate } }) => {
             <Text style={styles.textFailed}>Số điện thoại không hợp lệ</Text>
           ) : (
             <Text style={styles.textFailed}> </Text>
-          )}
+          )} */}
           <View style={[styles.wrapperInput, styles.spaceBottom]}>
             <MyTextInput
               placeholder="Mật khẩu"
@@ -146,14 +188,6 @@ const Register = ({ navigation: { navigate } }) => {
               onChangeText={e => handleCheckRePass(e)}
             />
             <View style={[styles.wrapperIcon, styles.icon]}>
-              {rePassword !== '' && (
-                <Icon
-                  style={styles.check}
-                  name={checkValidRePass ? 'times-circle-o' : 'check-circle-o'}
-                  size={20}
-                  color={checkValidRePass ? 'red' : Colors.GREEN}
-                />
-              )}
               <Button
                 title={
                   <Icon
@@ -168,29 +202,18 @@ const Register = ({ navigation: { navigate } }) => {
           </View>
         </View>
         <View style={styles.spaceBottom}>
-          {account.email === '' ||
-            account.name === '' ||
-            account.phone === '' ||
-            account.password === '' ||
-            rePassword === '' ||
-            checkValidEmail === true ||
-            checkPhoneValidity === true ||
-            checkValidRePass === true ? (
-            <Button
-              disabled
-              primary
-              title={'Đăng ký'}
-              onPress={handleRegister}
-            />
-          ) : (
-            <Button primary title={'Đăng ký'} onPress={handleRegister} />
-          )}
+          <Button
+            primary
+            title={'ĐĂNG KÝ'}
+            onPress={handleRegister}
+            disabled={isLoading}
+          />
         </View>
         <Button
           title={'Bạn đã có tài khoản?'}
           onPress={() => navigate('LoginScreen')}
         />
-        <View style={styles.other}>
+        {/* <View style={styles.other}>
           <View style={styles.otherContainer}>
             <Text style={styles.otherContent}>Hoặc đăng ký với</Text>
             <View style={styles.icon}>
@@ -204,10 +227,10 @@ const Register = ({ navigation: { navigate } }) => {
               />
             </View>
           </View>
-        </View>
+        </View> */}
       </View>
     </SafeAreaView>
   );
 };
 
-export default Register;
+export default RegisterScreen;
