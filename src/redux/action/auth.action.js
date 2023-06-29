@@ -2,6 +2,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiCallerPublic, ApiCallerPrivate } from "../../services/ApiCaller";
 import Auth from "../../utils/helper/auth.helper";
+import { handleErrors } from "../../utils/helper/common.helper";
 
 
 export const Register = createAsyncThunk('auth/signup', async (body, { rejectWithValue }) => {
@@ -9,7 +10,7 @@ export const Register = createAsyncThunk('auth/signup', async (body, { rejectWit
     await ApiCallerPublic('auth/signup', 'POST', body);
     return body.username;
   } catch (error) {
-    return rejectWithValue({ statusCode: error.response.status, message: error.response.data.message });
+    return rejectWithValue(handleErrors(error));
   }
 });
 
@@ -18,10 +19,36 @@ export const Verify = createAsyncThunk('auth/verify', async (body, { rejectWithV
     const { data } = await ApiCallerPublic('auth/confirm', 'POST', body);
     return data;
   } catch (error) {
-    return rejectWithValue({ statusCode: error.response.status, message: error.response.data.message });
+    return rejectWithValue(handleErrors(error));
   }
 });
 
+export const ForgotPassword = createAsyncThunk('auth/forgotpassword', async (body, { rejectWithValue }) => {
+  try {
+    const { data } = await ApiCallerPublic('auth/forgotpassword', 'POST', body);
+    return data;
+  } catch (error) {
+    return rejectWithValue(handleErrors(error));
+  }
+});
+
+export const VerifyForgotPassword = createAsyncThunk('auth/verifyforgotpassword', async (body, { rejectWithValue }) => {
+  try {
+    const { data } = await ApiCallerPublic('auth/verify-forget-password', 'POST', body);
+    return data;
+  } catch (error) {
+    return rejectWithValue(handleErrors(error));
+  }
+});
+
+export const ResetPassword = createAsyncThunk('auth/resetpassword', async (body, { rejectWithValue }) => {
+  try {
+    const { data } = await ApiCallerPublic('auth/password-reset', 'POST', body);
+    return data;
+  } catch (error) {
+    return rejectWithValue(handleErrors(error));
+  }
+});
 
 export const Login = createAsyncThunk('auth/signin', async (body, { rejectWithValue }) => {
   try {
@@ -29,7 +56,7 @@ export const Login = createAsyncThunk('auth/signin', async (body, { rejectWithVa
     await Auth.setInfo(data);
     return data;
   } catch (error) {
-    return rejectWithValue({ statusCode: error.response.status, message: error.response.data.message });
+    return rejectWithValue(handleErrors(error));
   }
 });
 
@@ -57,7 +84,7 @@ export const changePassword = createAsyncThunk('auth/changePassword', async (bod
     const { data } = await ApiCallerPrivate('auth/change-password', 'POST', body);
     return data;
   } catch (error) {
-    return rejectWithValue({ statusCode: error.response.status, message: error.response.data.message });
+    return rejectWithValue(handleErrors(error));
   }
 });
 

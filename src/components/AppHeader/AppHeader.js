@@ -48,7 +48,7 @@ const RightView = ({
   );
 const TitleView = ({ iconColor, titleAlight, title }) => (
   <View style={styles.titleView}>
-    <Title style={{ color: iconColor, textAlign: titleAlight }}>{title}</Title>
+    <Title style={{ color: iconColor, textAlign: titleAlight, fontWeight: 'bold' }}>{title}</Title>
   </View>
 );
 const AppHeader = ({

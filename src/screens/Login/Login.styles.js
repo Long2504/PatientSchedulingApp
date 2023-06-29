@@ -5,6 +5,9 @@ export const styles = StyleSheet.create({
   spaceBottom: {
     marginBottom: 30,
   },
+  keyboardView: {
+    flex: 1,
+  },
   main: {
     flex: 1,
     backgroundColor: Colors.WHITE,
@@ -17,6 +20,10 @@ export const styles = StyleSheet.create({
   top: {
     alignItems: 'center',
     marginBottom: 30,
+  },
+  imageLogo: {
+    width: 200,
+    height: 200,
   },
   login: {
     fontSize: Fonts.LARGE,
@@ -75,9 +82,12 @@ export const styles = StyleSheet.create({
     marginTop: 10,
   },
   btnConfirm: {
-    marginTop: 50,
+    marginTop: 25,
+    height: 50,
+    justifyContent: 'center',
   },
   btnRegister: {
     marginTop: 25,
+    height: 50,
   },
 });

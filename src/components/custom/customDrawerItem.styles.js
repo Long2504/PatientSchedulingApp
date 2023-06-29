@@ -1,12 +1,10 @@
 import { StyleSheet } from 'react-native';
-
+import { Colors } from '../../constants';
 export const drawerItemStyles = StyleSheet.create({
   drawerStyle: {
     borderBottomColor: '#0000001A',
     borderBottomWidth: 1,
     borderRadius: 0,
-    marginHorizontal: 0,
-    marginVertical: 0,
   },
   child: {
     borderBottomColor: '#0000001A',
@@ -16,8 +14,8 @@ export const drawerItemStyles = StyleSheet.create({
   },
   header: {
     height: 200,
-    borderBottomRightRadius: 25,
-    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 100,
+    borderBottomLeftRadius: 100,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -30,18 +28,15 @@ export const drawerItemStyles = StyleSheet.create({
     borderColor: '#fff',
   },
   nameView: {
-    backgroundColor: '#fff',
     width: 180,
     height: 45,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 20,
     marginTop: 20,
   },
-  drawerTitle: { fontWeight: 'bold', color: '#000', marginLeft: 5 },
+  drawerTitle: { fontWeight: 'bold', color: '#000', marginLeft: 10 },
   drawerLable: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: 10,
   },
 });

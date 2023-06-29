@@ -55,6 +55,15 @@ Auth.setInfo = async data => {
   }
 };
 
+Auth.setPatientInfo = async data => {
+  try {
+    await AsyncStorage.multiRemove([LOCAL.PATIENT_INFO]);
+    await AsyncStorage.setItem(LOCAL.PATIENT_INFO, JSON.stringify(data));
+  } catch (error) {
+    console.error('Error setting userInfo', error);
+  }
+};
+
 Auth.clearInfo = async () => {
   try {
     await AsyncStorage.removeItem(LOCAL.TOKEN);

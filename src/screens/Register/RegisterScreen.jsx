@@ -7,6 +7,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Colors } from '../../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { Register } from '../../redux/action/auth.action';
+import AppHeader from '../../components/AppHeader/AppHeader';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const RegisterScreen = ({ navigation: { navigate } }) => {
   const dispatch = useDispatch();
@@ -15,7 +18,7 @@ const RegisterScreen = ({ navigation: { navigate } }) => {
     username: '',
     password: '',
   });
-  const { error, isLoading } = useSelector(state => state.authSlice);
+  const { isLoading } = useSelector(state => state.authSlice);
 
 
 
@@ -78,7 +81,7 @@ const RegisterScreen = ({ navigation: { navigate } }) => {
     return setCheckValidRePass(false);
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (!account.email || !account.username || !account.password || !rePassword) {
       Alert.alert('Thông báo', 'Vui lòng nhập đầy đủ thông tin');
       return;
@@ -91,44 +94,37 @@ const RegisterScreen = ({ navigation: { navigate } }) => {
       Alert.alert('Thông báo', 'Email không hợp lệ');
       return;
     }
-    dispatch(Register(account)).then(() => {
-      console.log(error, "error");
-      console.log(account, "account")
-      if (error.statusCode) {
-        console.log(error.statusCode, "error.statusCode");
-        if (error.statusCode === 400) {
+    try {
+      await dispatch(Register(account)).unwrap();
+      navigate('VerifyScreen');
+
+    } catch (err) {
+      if (err.statusCode) {
+        if (err.statusCode === 400) {
           Alert.alert('Thông báo', "Tên đăng nhập hoặc email đã tồn tại");
           return;
         }
         return;
       };
-      console.log("ok");
-      navigate('VerifyScreen');
-      console.log("not ok");
-    }).catch((err) => {
-      Alert.alert('Thông báo', err);
-    });
-
-
-    // navigate('VerifyScreen');
-    // const checkPassowrd = checkPasswordValidity(account.password);
-    // if (!checkPassowrd) {
-    //   Alert.alert('Thông báo', 'OK');
-
-    // } else {
-    //   Alert.alert('Thông báo', checkPassowrd);
-    // }
+    }
   };
 
   return (
     <SafeAreaView style={styles.main}>
+      <AppHeader
+        back
+        title={'Đăng ký tài khoản'}
+        titleAlight={"center"}
+        headerBg={Colors.WHITE}
+        iconColor={Colors.BLACK}
+      />
       <View style={styles.container}>
-        <View style={styles.top}>
-          <Text style={styles.register}>Đăng Ký</Text>
-        </View>
         <View>
           <View style={styles.wrapperInput}>
             <MyTextInput
+              Icon={MaterialIcons}
+              nameIcon={'email'}
+              sizeIcon={20}
               placeholder="Email"
               keyboardType="email-address"
               value={account.email}
@@ -142,26 +138,19 @@ const RegisterScreen = ({ navigation: { navigate } }) => {
           )}
           <View style={[styles.wrapperInput, styles.spaceBottom]}>
             <MyTextInput
+              Icon={Ionicons}
+              nameIcon="person"
+              sizeIcon={20}
               placeholder="Tên đăng nhập"
               value={account.username}
               onChangeText={e => setAccount({ ...account, username: e })}
             />
           </View>
-          {/* <View style={styles.wrapperInput}>
-            <MyTextInput
-              placeholder="Số điện thoại"
-              keyboardType="phone-pad"
-              value={account.phone}
-              onChangeText={e => checkPhoneValidity(e)}
-            />
-          </View>
-          {checkValidPhone ? (
-            <Text style={styles.textFailed}>Số điện thoại không hợp lệ</Text>
-          ) : (
-            <Text style={styles.textFailed}> </Text>
-          )} */}
           <View style={[styles.wrapperInput, styles.spaceBottom]}>
             <MyTextInput
+              Icon={Ionicons}
+              nameIcon="lock-closed"
+              sizeIcon={20}
               placeholder="Mật khẩu"
               secureTextEntry={seePassword}
               value={account.password}
@@ -182,6 +171,9 @@ const RegisterScreen = ({ navigation: { navigate } }) => {
           </View>
           <View style={[styles.wrapperInput, styles.spaceBottom]}>
             <MyTextInput
+              Icon={Ionicons}
+              nameIcon="lock-closed"
+              sizeIcon={20}
               placeholder="Nhập lại mật khẩu"
               secureTextEntry={seeRePassword}
               value={rePassword}
@@ -213,21 +205,6 @@ const RegisterScreen = ({ navigation: { navigate } }) => {
           title={'Bạn đã có tài khoản?'}
           onPress={() => navigate('LoginScreen')}
         />
-        {/* <View style={styles.other}>
-          <View style={styles.otherContainer}>
-            <Text style={styles.otherContent}>Hoặc đăng ký với</Text>
-            <View style={styles.icon}>
-              <Button
-                title={<Icon name="facebook" size={20} color={Colors.BLACK} />}
-                icon
-              />
-              <Button
-                title={<Icon name="google" size={20} color={Colors.BLACK} />}
-                icon
-              />
-            </View>
-          </View>
-        </View> */}
       </View>
     </SafeAreaView>
   );

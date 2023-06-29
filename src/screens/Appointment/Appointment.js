@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { View, Text, TouchableOpacity, Modal, ScrollView, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, ScrollView, TextInput, Alert } from 'react-native';
 import Button from '../../components/Button';
 import { styles } from './AppointmentStyle';
 import { useState } from 'react';
@@ -18,6 +18,8 @@ import Auth from '../../utils/helper/auth.helper';
 const Appointment = ({ navigation: { navigate } }) => {
 
   const { speciality, doctor, listSchedule, error } = useSelector(state => state.scheduleSlice);
+  const { patient } = useSelector(state => state.patientSlice);
+  const { inforUser } = useSelector((state) => state.authSlice);
   const dayTomorrow = moment().add(1, 'days').format('dddd');
   const dateTomorrow = moment().add(1, 'days').format('DD');
   const monthTomorrow = moment().add(1, 'days').format('M');
@@ -28,18 +30,20 @@ const Appointment = ({ navigation: { navigate } }) => {
   const [currentDate, setCurrentDate] = useState('');
   const [currentMethod, setCurrentMethod] = useState(0);
   const dispatch = useDispatch();
+
   const handleDateSelect = (date) => {
     setCurrentDate(date);
     setModalVisible(false);
     setIndexClickTime(3);
     var date = moment(date).format('YYYY-MM-DD');
-    if (doctor.doctorID) {
-
+    if (!date) return;
+    if (doctor.doctorID && (moment(date).day() !== 0 || moment(date).day() !== 6)) {
       dispatch(getScheduleByDoctor({ doctorID: doctor.doctorID, date: date }));
+      return;
     }
-    else {
-
+    if (speciality.specialityID && (moment(date).day() !== 0 || moment(date).day() !== 6)) {
       dispatch(getScheduleBySpeciality({ specialityID: speciality.specialityID, date: date }));
+      return;
     }
   };
 
@@ -51,7 +55,7 @@ const Appointment = ({ navigation: { navigate } }) => {
       >
         <View style={[styles.modalContainer]}>
           <View style={styles.calendarContainer} >
-            <Text>Chọn ngày khám</Text>
+            <Text style={styles.titleCalendar}>Chọn ngày khám</Text>
             <Calendar
               onDayPress={(day) => handleDateSelect(day.dateString)}
               markedDates={{
@@ -73,6 +77,7 @@ const Appointment = ({ navigation: { navigate } }) => {
   }
 
   const [indexClickTime, setIndexClickTime] = useState(0);
+
   const handleGetSchedule = (type) => {
     setIndexClickTime(type);
     let date = '';
@@ -83,24 +88,36 @@ const Appointment = ({ navigation: { navigate } }) => {
       date = moment().add(2, 'days').format('YYYY-MM-DD')
     }
     setCurrentDate(date);
-
-    if (doctor.doctorID) {
+    if (doctor.doctorID && (moment(date).day() !== 0 || moment(date).day() !== 6)) {
       dispatch(getScheduleByDoctor({ doctorID: doctor.doctorID, appointmentDate: currentDate }));
       return;
     }
-    else {
+    if (speciality.specialityID && (moment(date).day() !== 0 || moment(date).day() !== 6)) {
       dispatch(getScheduleBySpeciality({ specialityID: speciality.specialityID, appointmentDate: currentDate }));
       return;
     }
   };
 
-  const loadingSchedule = (scheduleList) => {
+  const loadingSchedule = (scheduleList, date) => {
+    if (!date) return;
+    if (moment(date).day() === 0 || moment(date).day() === 6) {
+      return (
+        <View style={styles.containerScheduleTime}>
+          <Text style={styles.titleContainer}>Giờ khám mong muốn</Text>
+          <View style={styles.timeExamination}>
+            <Text style={styles.textSchedule}>Không có lịch khám</Text>
+          </View>
+        </View>
+      )
+    }
+
     if (scheduleList.length === 14) {
       return (
         <View style={styles.containerScheduleTime}>
           <Text style={styles.titleContainer}>Giờ khám mong muốn</Text>
           <View style={styles.timeExamination}>
             <Button title={"08:00"}
+              key={0}
               disabled={scheduleList[0] === true && true}
               style={[
                 styles.btnTime,
@@ -110,6 +127,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               onPress={() => clickChooseTime("08:00")}
             />
             <Button title={"08:30"}
+              key={1}
               disabled={scheduleList[1] === true && true}
               style={[
                 styles.btnTime,
@@ -119,6 +137,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               onPress={() => clickChooseTime("08:30")}
             />
             <Button title={"09:00"}
+              key={2}
               disabled={scheduleList[2] === true && true}
               style={[
                 styles.btnTime,
@@ -128,6 +147,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               textColor={currentTime === "09:00" && Colors.WHITE}
             />
             <Button title={"09:30"}
+              key={3}
               disabled={scheduleList[3] === true && true}
               style={[
                 styles.btnTime,
@@ -137,6 +157,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               textColor={currentTime === "09:30" && Colors.WHITE}
             />
             <Button title={"10:00"}
+              key={4}
               disabled={scheduleList[4] === true && true}
               style={[
                 styles.btnTime,
@@ -146,6 +167,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               textColor={currentTime === "10:00" && Colors.WHITE}
             />
             <Button title={"10:30"}
+              key={5}
               disabled={scheduleList[5] === true && true}
               style={[
                 styles.btnTime,
@@ -155,6 +177,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               textColor={currentTime === "10:30" && Colors.WHITE}
             />
             <Button title={"11:00"}
+              key={6}
               disabled={scheduleList[6] === true && true}
               style={[
                 styles.btnTime,
@@ -164,6 +187,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               textColor={currentTime === "11:00" && Colors.WHITE}
             />
             <Button title={"13:00"}
+              key={7}
               disabled={scheduleList[7] === true && true}
               style={[
                 styles.btnTime,
@@ -173,6 +197,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               textColor={currentTime === "13:00" && Colors.WHITE}
             />
             <Button title={"13:30"}
+              key={8}
               disabled={scheduleList[8] === true && true}
               style={[
                 styles.btnTime,
@@ -182,6 +207,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               textColor={currentTime === "13:30" && Colors.WHITE}
             />
             <Button title={"14:00"}
+              key={9}
               disabled={scheduleList[9] === true && true}
               style={[
                 styles.btnTime,
@@ -191,6 +217,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               textColor={currentTime === "14:00" && Colors.WHITE}
             />
             <Button title={"14:30"}
+              key={10}
               disabled={scheduleList[10] === true && true}
               style={[
                 styles.btnTime,
@@ -200,6 +227,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               textColor={currentTime === "14:30" && Colors.WHITE}
             />
             <Button title={"15:00"}
+              key={11}
               disabled={scheduleList[11] === true && true}
               style={[
                 styles.btnTime,
@@ -209,6 +237,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               textColor={currentTime === "15:00" && Colors.WHITE}
             />
             <Button title={"15:30"}
+              key={12}
               disabled={scheduleList[12] === true && true}
               style={[
                 styles.btnTime,
@@ -218,6 +247,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               textColor={currentTime === "15:30" && Colors.WHITE}
             />
             <Button title={"16:00"}
+              key={13}
               disabled={scheduleList[13] === true && true}
               style={[
                 styles.btnTime,
@@ -233,6 +263,7 @@ const Appointment = ({ navigation: { navigate } }) => {
     }
   }
   const [currentTime, setCurrentTime] = useState('');
+
   const clickChooseTime = (time) => {
     setCurrentTime(time);
   }
@@ -240,6 +271,34 @@ const Appointment = ({ navigation: { navigate } }) => {
 
   const handleBookSchedule = async () => {
     const patientIDget = await Auth.getIdPatient();
+    if (currentMethod === 0) {
+      Alert.alert("Thông báo", "Vui lòng chọn phương thức khám");
+      return;
+    }
+    if (!doctor.doctorID && currentMethod === 1) {
+      Alert.alert("Thông báo", "Vui lòng chọn bác sĩ khám");
+      return;
+    }
+    if (!speciality.specialityID && currentMethod === 2) {
+      Alert.alert("Thông báo", "Vui lòng chọn chuyên khoa khám");
+      return;
+    }
+    if (!currentDate) {
+      Alert.alert("Thông báo", "Vui lòng chọn ngày khám");
+      return;
+    }
+    if (!currentTime) {
+      Alert.alert("Thông báo", "Vui lòng chọn giờ khám");
+      return;
+    }
+    if (!reasonForExamination) {
+      Alert.alert("Thông báo", "Vui lòng nhập lý do khám");
+      return;
+    }
+    if (!inforUser.name || !inforUser.phone || !inforUser.email || !inforUser.address || !inforUser.dateOfBirth) {
+      Alert.alert("Thông báo", "Vui lòng cập nhật thông tin cá nhân");
+      return;
+    }
     const schedule = {
       doctorID: doctor.doctorID,
       specialityID: speciality.specialityID,
@@ -303,29 +362,28 @@ const Appointment = ({ navigation: { navigate } }) => {
             <Text style={styles.titleContainer}>Ngày khám mong muốn</Text>
             <View style={styles.dateExamination}>
               <TouchableOpacity onPress={() => handleGetSchedule(1)} style={styles.btnDateItem}>
-                <View style={[styles.dateItem, { backgroundColor: indexClickTime == 1 ? colorOFSchedule.activeBgrMethodItem : colorOFSchedule.inactiveBgrMethodItem }]}>
-                  <Text>{`${dayTomorrow} ngày ${dateTomorrow}`}</Text>
-                  <Text>{`Thg ${monthTomorrow}`}</Text>
+                <View style={[styles.dateItem, { backgroundColor: indexClickTime == 1 ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem }]}>
+                  <Text style={{ color: indexClickTime == 1 ? Colors.WHITE : Colors.BLACK }}>{`${dayTomorrow} ngày ${dateTomorrow}`}</Text>
+                  <Text style={{ color: indexClickTime == 1 ? Colors.WHITE : Colors.BLACK }}>{`Thg ${monthTomorrow}`}</Text>
                 </View>
                 <Text style={styles.titleDateItem}>Ngày mai</Text>
               </TouchableOpacity>
-
               <TouchableOpacity onPress={() => handleGetSchedule(2)} style={styles.btnDateItem}>
-                <View style={[styles.dateItem, { backgroundColor: indexClickTime == 2 ? colorOFSchedule.activeBgrMethodItem : colorOFSchedule.inactiveBgrMethodItem }]}>
-                  <Text>{`${dayAfterTomorrow} ngày ${dateAfterTomorrow}`}</Text>
-                  <Text>{`Thg ${monthAfterTomorrow}`}</Text>
+                <View style={[styles.dateItem, { backgroundColor: indexClickTime == 2 ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem }]}>
+                  <Text style={{ color: indexClickTime == 2 ? Colors.WHITE : Colors.BLACK }}>{`${dayAfterTomorrow} ngày ${dateAfterTomorrow}`}</Text>
+                  <Text style={{ color: indexClickTime == 2 ? Colors.WHITE : Colors.BLACK }}>{`Thg ${monthAfterTomorrow}`}</Text>
                 </View>
                 <Text style={styles.titleDateItem}>Ngày kia</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.btnDateItem}>
                 {
-                  !currentDate ? <View style={[styles.dateItem, { backgroundColor: colorOFSchedule.inactiveBgrMethodItem }]}>
-                    <MaterialIcons name="add" size={30} />
+                  (currentDate && indexClickTime == 3) ? <View style={[styles.dateItem, { backgroundColor: indexClickTime === 3 ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem }]}>
+                    <Text style={{ color: indexClickTime == 3 ? Colors.WHITE : Colors.BLACK }}>{`${moment(currentDate).format('dddd')} ngày ${moment(currentDate).format('DD')}`}</Text>
+                    <Text style={{ color: indexClickTime == 3 ? Colors.WHITE : Colors.BLACK }}>{`Thg ${moment(currentDate).format('MM')}`}</Text>
                   </View>
                     :
-                    <View style={[styles.dateItem, { backgroundColor: indexClickTime === 3 ? colorOFSchedule.activeBgrMethodItem : colorOFSchedule.inactiveBgrMethodItem }]}>
-                      <Text>{`${moment(currentDate).format('dddd')} ngày ${moment(currentDate).format('DD')}`}</Text>
-                      <Text>{`Thg ${moment(currentDate).format('MM')}`}</Text>
+                    <View style={[styles.dateItem, { backgroundColor: colorOFSchedule.inactiveBgrMethodItem }]}>
+                      <MaterialIcons name="add" size={30} />
                     </View>
                 }
                 <Text style={styles.titleDateItem}>Ngày khác</Text>
@@ -333,7 +391,7 @@ const Appointment = ({ navigation: { navigate } }) => {
 
             </View>
           </View >
-          {loadingSchedule(listSchedule)}
+          {loadingSchedule(listSchedule, currentDate)}
 
         </View>
         <View style={styles.containerReason}>

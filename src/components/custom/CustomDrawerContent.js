@@ -4,7 +4,7 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 import { View, Text, Image } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import MIcons from 'react-native-vector-icons/MaterialIcons';
 import FAIcons from 'react-native-vector-icons/FontAwesome';
 import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -16,8 +16,10 @@ import { Colors } from '../../constants';
 
 
 function CustomDrawerContent(props) {
-  const dispatch = useDispatch();
 
+  const { username } = useSelector(state => state.authSlice);
+
+  const dispatch = useDispatch();
   const handleLogout = () => {
     dispatch(Logout());
   };
@@ -25,15 +27,14 @@ function CustomDrawerContent(props) {
     <DrawerContentScrollView {...props}>
       <View>
         <LinearGradient
-          colors={[Colors.DEFAULT_CORLOR, '#4CA2E7']}
+          colors={[Colors.DEFAULT_CORLOR, '#89D8D3']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           style={styles.header}
         >
-          {/* <Image style={styles.avatar} /> */}
           <View style={styles.nameView}>
-            <Text style={{ fontSize: 20, fontWeight: 700, color: '#000' }}>
-              Suong Phan
+            <Text style={{ fontSize: 30, fontWeight: 700, color: '#ffff' }}>
+              {username}
             </Text>
           </View>
         </LinearGradient>
@@ -43,7 +44,17 @@ function CustomDrawerContent(props) {
         style={styles.drawerStyle}
         label={() => (
           <View style={styles.drawerLable}>
-            <MIcons name="logout" size={24} color="#CC0000" />
+            <View style={{
+              width: 40,
+              height: 40,
+              borderRadius: 8,
+              backgroundColor: Colors.DEFAULT_LIGHT_CORLOR,
+              justifyContent: 'center',
+              alignItems: 'center'
+
+            }}>
+              <MIcons name="logout" size={24} color="#CC0000" />
+            </View>
             <Text style={styles.drawerTitle}>Logout</Text>
           </View>
         )}

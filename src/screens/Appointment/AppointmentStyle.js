@@ -105,16 +105,24 @@ export const styles = StyleSheet.create({
 
   modalContainer: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center',
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   calendarContainer: {
     width: '100%',
-    height: "100%",
+    height: "55%",
     backgroundColor: '#fff',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
+  },
+  titleCalendar: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: Colors.BLACK,
+    textAlign: 'center',
+    marginBottom: 10,
   },
   timeExamination: {
     flexDirection: 'row',

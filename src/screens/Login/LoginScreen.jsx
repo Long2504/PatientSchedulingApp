@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Text, View, Alert } from 'react-native';
+import { SafeAreaView, Text, View, Alert, Image, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import MyTextInput from '../../components/MyTextInput';
 import { styles } from './Login.styles';
 import Button from '../../components/Button';
@@ -7,11 +7,13 @@ import { Colors } from '../../constants';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { Login } from '../../redux/action/auth.action';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import logo from "../../../assets/logo.png";
+
 const LoginScreen = ({ navigation: { navigate } }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [seePassword, setSeePassword] = useState(true);
-  const [checkValidEmail, setCheckValidEmail] = useState(false);
 
   const handleCheckEmail = e => {
     setUser({ ...user, "username": e })
@@ -70,84 +72,82 @@ const LoginScreen = ({ navigation: { navigate } }) => {
   };
 
   return (
-    <SafeAreaView style={styles.main}>
-      <View style={styles.container}>
-        <View style={styles.top}>
-          <Text style={styles.login}>Login here</Text>
-          <Text style={styles.welcome}>
-            Chào mừng quay trở lại với HealthCare
-          </Text>
-        </View>
-        <View>
-          <View style={styles.wrapperInput}>
-            <MyTextInput
-              name="username"
-              placeholder="Tên đăng nhập"
-              onChangeText={e => setUser({ ...user, "username": e })}
-              style={styles.inputItem}
-            />
+    <TouchableWithoutFeedback
+      style={{ backgroundColor: '#fff' }}
+      onPress={() => Keyboard.dismiss()}>
+      <SafeAreaView style={styles.main}>
+        <View style={styles.container}>
+          <View style={styles.top}>
+            <Image source={logo} style={styles.imageLogo} />
+            <Text style={styles.welcome}>
+              Chào mừng quay trở lại với HealthCare
+            </Text>
           </View>
-          <View style={styles.wrapperInput}>
-            <MyTextInput
-              placeholder="Mật khẩu"
-              secureTextEntry={seePassword}
-              name="password"
-              onChangeText={e => setUser({ ...user, "password": e })}
-              style={styles.inputItem}
-            />
-            <View style={styles.wrapperIcon}>
-              <Button
-                title={
-                  <Icon
-                    name={seePassword ? 'eye' : 'eye-slash'}
-                    size={20}
-                    color={Colors.BLACK}
-                  />
-                } asd
-                onPress={() => setSeePassword(!seePassword)}
+          <View>
+            <View style={styles.wrapperInput}>
+              <MyTextInput
+                Icon={Ionicons}
+                nameIcon="person"
+                sizeIcon={20}
+                name="username"
+                placeholder="Tên đăng nhập"
+                onChangeText={e => setUser({ ...user, "username": e })}
+              // style={styles.inputItem}
               />
             </View>
+            <View style={styles.wrapperInput}>
+              <MyTextInput
+                Icon={Ionicons}
+                nameIcon="lock-closed"
+                sizeIcon={20}
+                placeholder="Mật khẩu"
+                secureTextEntry={seePassword}
+                name="password"
+                onChangeText={e => setUser({ ...user, "password": e })}
+                style={styles.inputItem}
+              />
+              <View style={styles.wrapperIcon}>
+                <Button
+                  title={
+                    <Icon
+                      name={seePassword ? 'eye' : 'eye-slash'}
+                      size={20}
+                      color={Colors.BLACK}
+                    />
+                  }
+                  onPress={() => setSeePassword(!seePassword)}
+                />
+              </View>
+            </View>
           </View>
-        </View>
-        <Button
-          textAlign={'right'}
-          title={'Bạn quên mật khẩu?'}
-          textColor={Colors.GREEN}
-          style={styles.btnForgot}
-        />
-        <View style={styles.btnConfirm}>
-          {
-            handleErrors()
-          }
           <Button
-            primary
-            title={'ĐĂNG NHẬP'}
-            onPress={() => handleLogin()}
-            disabled={isLoading}
+            textAlign={'right'}
+            title={'Bạn quên mật khẩu?'}
+            textColor={Colors.DEFAULT_CORLOR}
+            style={styles.btnForgot}
+            onPress={() => navigate('ForgotPasswordScreen')}
           />
-
-        </View>
-        <Button
-
-          title={'Tạo tài khoản mới'}
-          onPress={() => navigate('RegisterScreen')}
-          style={styles.btnRegister}
-        />
-        {/* <View style={styles.other}>
-          <Text style={styles.otherContent}>Hoặc đăng nhập với</Text>
-          <View style={styles.iconGroup}>
+          <View style={styles.btnConfirm}>
+            {
+              handleErrors()
+            }
             <Button
-              title={<Icon name="facebook" size={20} color={Colors.BLACK} />}
-              icon
-            />
-            <Button
-              title={<Icon name="google" size={20} color={Colors.BLACK} />}
-              icon
+              primary
+              title={'ĐĂNG NHẬP'}
+              onPress={() => handleLogin()}
+              disabled={isLoading}
+              style={styles.btnConfirm}
             />
           </View>
-        </View> */}
-      </View>
-    </SafeAreaView>
+          <Button
+            title={'Tạo tài khoản mới'}
+            onPress={() => navigate('RegisterScreen')}
+            style={styles.btnRegister}
+            textColor={Colors.DEFAULT_CORLOR}
+          />
+        </View>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 

@@ -7,7 +7,7 @@ const Avatar = ({
   size = 60,
   rounded = false,
   circle = false,
-  source = '',
+  source,
   children,
   ...otherProps
 }) => {

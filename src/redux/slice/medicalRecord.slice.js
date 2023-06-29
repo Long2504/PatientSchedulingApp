@@ -8,7 +8,7 @@ const initialState = {
 };
 
 
-export const scheduleSlice = createSlice({
+export const medicalRecordSlice = createSlice({
   name: 'schedule',
   initialState,
   reducers: {
@@ -30,4 +30,4 @@ export const scheduleSlice = createSlice({
   }
 }
 );
-export default scheduleSlice.reducer;
+export default medicalRecordSlice.reducer;

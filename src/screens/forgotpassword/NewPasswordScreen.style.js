@@ -19,6 +19,7 @@ export const styles = StyleSheet.create({
     height: '100%',
     alignItems: 'center',
     backgroundColor: Colors.WHITE,
+    marginTop: 10,
     paddingHorizontal: '5%',
   },
   fieldItem: {
@@ -43,6 +44,9 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  input: {
+    width: '90%',
   },
   btnSave: {
     width: '100%',

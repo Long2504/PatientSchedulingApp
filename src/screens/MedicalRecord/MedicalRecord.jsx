@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { ScrollView, View, Text, TouchableOpacity } from 'react-native'
 import { styles } from './MedicalRecord.style'
+import { getAllMedicalRecord } from '../../redux/action/medicalRecord.action'
+import Auth from '../../utils/helper/auth.helper'
 function MedicalRecord({ navigation }) {
   const data = [
     {
@@ -148,6 +151,27 @@ function MedicalRecord({ navigation }) {
     },
   ]
 
+  const { listMedicalRecord, error } = useSelector(state => state.medicalRecordSlice);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchMedicalRecord = async () => {
+      try {
+        const patientId = await Auth.getIdPatient();
+        console.log(patientId, "patientId");
+        if (patientId) {
+          dispatch(getAllMedicalRecord({ patientId: patientId }));
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchMedicalRecord();
+  }, [])
+
+
   const loadMedicalRecord = (list) => {
     if (list.length > 0) {
       return list.map((medicalRecord, index) => {
@@ -172,7 +196,7 @@ function MedicalRecord({ navigation }) {
     <ScrollView style={styles.container}>
       <Text style={styles.textTitle}>Danh sách hồ sơ bệnh án</Text>
       <View style={styles.containerMain}>
-        {loadMedicalRecord(data)}
+        {loadMedicalRecord(listMedicalRecord)}
       </View>
 
     </ScrollView>

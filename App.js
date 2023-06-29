@@ -12,6 +12,10 @@ import 'react-native-gesture-handler';
 import moment from 'moment';
 import VerifyScreen from './src/screens/verify/VerifyScreen';
 import RegisterScreen from './src/screens/Register/RegisterScreen';
+import { getPatientInLocal } from './src/redux/action/patient.action';
+import ForgotPasswordScreen from './src/screens/forgotpassword/ForgotPasswordScreen';
+import NewPasswordScreen from './src/screens/forgotpassword/NewPasswordScreen';
+
 
 const App = () => {
   return (
@@ -35,7 +39,8 @@ const AppNavigator = () => {
   const dispath = useDispatch();
 
   useEffect(() => {
-    dispath(checkLogged())
+    dispath(checkLogged());
+    dispath(getPatientInLocal());
   }, []);
 
 
@@ -57,6 +62,16 @@ const AppNavigator = () => {
             <Stack.Screen
               component={VerifyScreen}
               name="VerifyScreen"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              component={ForgotPasswordScreen}
+              name="ForgotPasswordScreen"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              component={NewPasswordScreen}
+              name="NewPasswordScreen"
               options={{ headerShown: false }}
             />
           </Stack.Navigator>

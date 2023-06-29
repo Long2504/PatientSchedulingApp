@@ -4,14 +4,16 @@ import { styles } from './VerifyScreen.style';
 import Button from '../../components/Button';
 import { Colors } from '../../constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { Verify } from '../../redux/action/auth.action';
+import { Verify, VerifyForgotPassword } from '../../redux/action/auth.action';
 import AppHeader from '../../components/AppHeader/AppHeader';
 
-const VerifyScreen = ({ navigation: { navigate } }) => {
+const VerifyScreen = ({ navigation: { navigate }, route }) => {
+  const { screen } = route.params;
   const inputRefs = useRef([]);
-  const { username, error, isLoading } = useSelector(state => state.authSlice);
-  console.log(username);
+  const { username, email, isLoading } = useSelector(state => state.authSlice);
   const [code, setCode] = useState(['', '', '', '', '', '']);
+  const { error } = useSelector(state => state.authSlice);
+
   const handleCodeChange = (value, index) => {
     const newCode = [...code];
     newCode[index] = value;
@@ -21,27 +23,44 @@ const VerifyScreen = ({ navigation: { navigate } }) => {
     }
   };
   const dispatch = useDispatch();
-  const handleVerify = () => {
+  const handleVerify = async () => {
     const otp = code.join('');
-    console.log(otp);
-
-    console.log(error, 'error');
-    dispatch(Verify({ username: username, confirmationCode: otp })).then(() => {
-      if (error.statusCode) {
-        // console.log(error.statusCode, "error.statusCode");
-        if (error.statusCode === 400) {
+    let check = otp ? parseInt(otp) : 0;
+    console.log(typeof check, check);
+    if (check < 100000) {
+      Alert.alert('Thông báo', 'Nhập đủ 6 số OTP');
+      return;
+    }
+    if (screen === 'forgot') {
+      try {
+        await dispatch(VerifyForgotPassword({ username: username, confirmationCode: otp })).unwrap();
+        navigate('NewPasswordScreen');
+        return;
+      } catch (error) {
+        if (error.statusCode) {
+          if (error.statusCode === 400) {
+            Alert.alert('Thông báo', 'Mã OTP không đúng');
+            return;
+          }
+          Alert.alert('Thông báo', error);
+          return;
+        }
+      }
+    }
+    try {
+      await dispatch(Verify({ username: username, confirmationCode: otp })).unwrap()
+      navigate('LoginScreen');
+    }
+    catch (err) {
+      if (err.statusCode) {
+        if (err.statusCode === 400) {
           Alert.alert('Thông báo', 'Mã OTP không đúng');
           return;
         }
-        Alert.alert('Thông báo', error);
+        Alert.alert('Thông báo', err);
         return;
       }
-      navigate('LoginScreen');
-    }).catch((err) => {
-      Alert.alert('Thông báo', err);
-      return;
-    });
-    console.log(error, 'error');
+    };
   };
 
   return (
@@ -49,8 +68,9 @@ const VerifyScreen = ({ navigation: { navigate } }) => {
       <AppHeader
         back
         title={'Xác thực OTP'}
-        headerBg={Colors.DEFAULT_CORLOR}
-        iconColor={Colors.WHITE}
+        headerBg={Colors.WHITE}
+        iconColor={Colors.BLACK}
+        titleAlight={"center"}
       />
       <View style={styles.content}>
         <Text style={{ textAlign: 'center', fontSize: 20, fontWeight: 'bold' }}>Nhập mã OTP</Text>

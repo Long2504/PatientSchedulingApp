@@ -41,6 +41,20 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 10,
     fontSize: 17,
+    color: Colors.BLACK,
+  },
+  fieldDateOfBirth: {
+    width: '100%',
+    height: 50,
+    borderRadius: 10,
+    borderColor: Colors.DEFAULT_CORLOR,
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    marginBottom: 10,
+    fontSize: 17,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   groupRadioBtn: {
     flexDirection: 'row',
@@ -65,7 +79,20 @@ export const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 20,
   },
-
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  calendarContainer: {
+    width: '100%',
+    height: '50%',
+    backgroundColor: Colors.WHITE,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    padding: 10,
+  },
 
 
 });

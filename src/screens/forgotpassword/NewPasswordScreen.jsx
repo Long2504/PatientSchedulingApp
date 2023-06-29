@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { ScrollView, Text, View, TextInput, Modal, Alert } from "react-native";
-import { styles } from "./ChangePassword.style";
+import { styles } from "./NewPasswordScreen.style";
 import { useDispatch, useSelector } from "react-redux";
 
 import Button from '../../components/Button';
@@ -8,31 +8,33 @@ import AppHeader from "../../components/AppHeader/AppHeader";
 import { Colors } from "../../constants";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useState } from "react";
-import { changePassword } from "../../redux/action/auth.action";
-const ChangePassword = () => {
-  const [seePassword1, setSeePassword1] = useState(true);
+import { ResetPassword, changePassword } from "../../redux/action/auth.action";
+const NewPasswordScreen = ({ navigation: { navigate } }) => {
   const [seePassword2, setSeePassword2] = useState(true);
   const [seePassword3, setSeePassword3] = useState(true);
-  const [password, setPassword] = useState({ password: "", newPassword: "" });
+  const [password, setPassword] = useState();
   const [rePassword, setRePassword] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
+  const { _id } = useSelector((state) => state.authSlice);
   const dispatch = useDispatch()
   const handleChangePassword = async () => {
-    if (!password.password || !password.newPassword || !rePassword) {
-      Alert.alert("Vui lòng nhập đầy đủ thông tin");
+    if (!password || !rePassword) {
+      Alert.alert("Thông báo", "Vui lòng nhập đầy đủ thông tin");
       return;
     }
-    if (password.newPassword !== rePassword) {
-      Alert.alert("Mật khẩu mới không trùng khớp");
+    if (password !== rePassword) {
+      Alert.alert("Thông báo", "Mật khẩu mới không trùng khớp");
       return;
     }
     try {
-      await dispatch(changePassword(password)).unwrap();
+      await dispatch(ResetPassword({
+        _id: _id, newPassword: password
+      })).unwrap();
       setShowSuccess(true);
       setTimeout(() => {
         setShowSuccess(false);
       }, 1000);
-
+      navigate('LoginScreen');
     } catch (err) {
       if (err.statusCode) {
         if (err.statusCode === 401) {
@@ -44,52 +46,26 @@ const ChangePassword = () => {
     }
 
   }
+  console.log(password);
 
 
   return (
     <View style={styles.container}>
       <AppHeader
         back
-        title={'Đổi mật khẩu'}
-        titleAlight={"center"}
-        headerBg={Colors.WHITE}
-        iconColor={Colors.BLACK}
+        title={'Tạo mật khẩu mới'}
+        headerBg={Colors.DEFAULT_CORLOR}
+        iconColor={Colors.WHITE}
       />
-
+      <Text style={styles.textTitle}>Tạo mật khẩu mới</Text>
       <View style={styles.containerMain}>
-        <View style={styles.fieldItem}>
-          <Text style={styles.fieldItemTitle}>
-            Mật khẩu cũ <Text style={{ color: "red" }}>*</Text>
-          </Text>
-          <View style={styles.fieldItemInput}>
-            <TextInput
-              name="password"
-              placeholder="Mật khẩu cũ"
-              autoCapitalize="none"
-              autoCorrect={false}
-              textContentType="newPassword"
-              secureTextEntry={seePassword1}
-              enablesReturnKeyAutomatically
-              onChangeText={text => setPassword({ ...password, "password": text })}
-            />
-            <Button
-              title={
-                <FontAwesome
-                  name={seePassword1 ? 'eye' : 'eye-slash'}
-                  size={20}
-                  color={Colors.BLACK}
-                />
-              }
-              onPress={() => setSeePassword1(!seePassword1)}
-            />
-          </View>
-        </View>
         <View style={styles.fieldItem}>
           <Text style={styles.fieldItemTitle}>
             Mật khẩu mới <Text style={{ color: "red" }}>*</Text>
           </Text>
           <View style={styles.fieldItemInput}>
             <TextInput
+              style={styles.input}
               name="newPassword"
               placeholder="Mật khẩu mới"
               autoCapitalize="none"
@@ -97,7 +73,7 @@ const ChangePassword = () => {
               textContentType="newPassword"
               secureTextEntry={seePassword2}
               enablesReturnKeyAutomatically
-              onChangeText={text => setPassword({ ...password, "newPassword": text })}
+              onChangeText={text => setPassword(text)}
             />
             <Button
               title={
@@ -117,6 +93,7 @@ const ChangePassword = () => {
           </Text>
           <View style={styles.fieldItemInput}>
             <TextInput
+              style={styles.input}
               name="password"
               placeholder="Nhập lại mật khẩu mới"
               autoCapitalize="none"
@@ -156,4 +133,4 @@ const ChangePassword = () => {
   );
 };
 
-export default ChangePassword;
+export default NewPasswordScreen;

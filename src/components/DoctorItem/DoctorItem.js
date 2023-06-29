@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { styles } from './DoctorItem.styles';
 import Avatar from '../Avatar';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import Button from '../Button';
 import { useDispatch } from 'react-redux';
 import { setDoctor, setSpeciality } from '../../redux/slice/schedule.slice';
-
+import doctorImgae from "../../../assets/images/doctor.jpg"
 
 
 
@@ -20,12 +20,16 @@ const DoctorItem = ({ doctor, navigation }) => {
   }
   return (
     <TouchableOpacity style={styles.container} onPress={() => handleClickDoctor(doctor)} >
-      <View>
-        <Avatar
-          size={117}
-          rounded
-          source={{ uri: doctor.uri, width: 130, height: 130 }}
-        />
+      <View style={{
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <Image source={doctorImgae} style={{
+          width: 100,
+          height: 100,
+          resizeMode: 'cover',
+          borderRadius: 5,
+        }} />
       </View>
       <View style={styles.doctorInfo}>
         <Text style={styles.name}>{doctor.name}</Text>

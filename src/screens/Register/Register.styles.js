@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {Colors, Fonts} from '../../constants';
+import { StyleSheet } from 'react-native';
+import { Colors, Fonts } from '../../constants';
 
 export const styles = StyleSheet.create({
   spaceBottom: {
@@ -26,7 +26,6 @@ export const styles = StyleSheet.create({
     marginVertical: 10,
   },
   wrapperInput: {
-    flexDirection: 'row',
     alignItems: 'center',
   },
   wrapperIcon: {

@@ -4,4 +4,5 @@ export default {
   WHITE: '#fff',
   BLACK: '#000',
   GRAY: '#F7F7F7',
+  BLACK_OPACITY_50: 'rgba(0,0,0,0.5)',
 };

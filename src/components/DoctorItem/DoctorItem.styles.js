@@ -7,10 +7,10 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 12,
-    borderWidth: 3,
+    borderWidth: 1,
     borderColor: Colors.GRAY,
     backgroundColor: Colors.WHITE,
-    marginBottom: 10,
+    marginBottom: 5,
     padding: 5,
   },
   doctorInfo: {

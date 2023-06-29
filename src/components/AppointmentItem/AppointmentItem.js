@@ -1,13 +1,14 @@
 import React from 'react';
-import {View, Text} from 'react-native';
-import {Colors, Fonts} from '../../constants';
+import { View, Text } from 'react-native';
+import { Colors, Fonts } from '../../constants';
 import Avatar from '../Avatar';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
-import {styles} from './AppointmentItem.styles';
+import { styles } from './AppointmentItem.styles';
+import doctor from "../../../assets/images/doctor.jpg"
 
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
-const AppointmentItem = ({id, name, department, date, time}) => {
+const AppointmentItem = ({ id, name, department, date, time }) => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -16,7 +17,7 @@ const AppointmentItem = ({id, name, department, date, time}) => {
           <Avatar
             size={50}
             circle
-            source={require('../../../assets/images/avatar.png')}
+            source={doctor}
           />
           <View>
             <Text style={styles.name}>{name}</Text>
@@ -28,7 +29,7 @@ const AppointmentItem = ({id, name, department, date, time}) => {
             name={'right'}
             size={Fonts.LARGE}
             color={Colors.WHITE}
-            onPress={() => navigation.navigate('AppointmentDetail', {id: id})}
+            onPress={() => navigation.navigate('AppointmentDetail', { id: id })}
           />
         </View>
       </View>

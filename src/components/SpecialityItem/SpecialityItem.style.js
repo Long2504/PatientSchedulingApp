@@ -13,11 +13,14 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     borderColor: "black",
   },
-  iconInfo: {
+  btnInfo: {
+    width: 25,
+    height: 25,
+    borderRadius: 25,
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    right: -10,
-    bottom: 45,
+    right: 5,
+    top: 5,
   },
 });

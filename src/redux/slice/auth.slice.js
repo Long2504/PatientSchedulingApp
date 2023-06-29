@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Register, Login, checkLogged, Logout, getInfor, changePassword, Verify } from "../action/auth.action";
+import { Register, Login, checkLogged, Logout, getInfor, changePassword, Verify, ForgotPassword, VerifyForgotPassword } from "../action/auth.action";
 
 const initialState = {
   inforUser: {},
@@ -9,7 +9,8 @@ const initialState = {
   error: {},
   statusUpdatePassword: false,
   username: null,
-
+  email: null,
+  _id: null,
 };
 
 export const authSlice = createSlice({
@@ -28,7 +29,6 @@ export const authSlice = createSlice({
     builder.addCase(Register.rejected, (state, { payload }) => {
       state.isLoading = false;
       state.error = payload;
-      console.log(payload, "payload in auth.slice.js Register.rejected");
     });
     builder.addCase(Verify.pending, state => {
       state.isLoading = true;
@@ -40,7 +40,31 @@ export const authSlice = createSlice({
     builder.addCase(Verify.rejected, (state, { payload }) => {
       state.isLoading = false;
       state.error = payload;
-      console.log(payload, "payload in auth.slice.js Verify.rejected");
+    });
+    builder.addCase(ForgotPassword.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(ForgotPassword.fulfilled, (state, { payload }) => {
+      state.isLoading = false;
+      state.username = payload.username;
+      state.email = payload.email;
+      state.error = {};
+    });
+    builder.addCase(ForgotPassword.rejected, (state, { payload }) => {
+      state.isLoading = false;
+      state.error = payload;
+    });
+    builder.addCase(VerifyForgotPassword.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(VerifyForgotPassword.fulfilled, (state, { payload }) => {
+      state.isLoading = false;
+      state._id = payload.id;
+      state.error = {};
+    });
+    builder.addCase(VerifyForgotPassword.rejected, (state, { payload }) => {
+      state.isLoading = false;
+      state.error = payload;
     });
     builder.addCase(Login.pending, state => {
       state.isLoading = true;
@@ -51,22 +75,21 @@ export const authSlice = createSlice({
       state.patient = payload.patient;
       state.error = {};
     });
-    builder.addCase(Login.rejected, (state, action) => {
+    builder.addCase(Login.rejected, (state, { payload }) => {
       state.isLoading = false;
-      state.error = action.payload;
+      state.error = payload;
     });
     builder.addCase(checkLogged.pending, state => {
       state.isLoading = true;
     });
-    builder.addCase(checkLogged.fulfilled, (state, action) => {
+    builder.addCase(checkLogged.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      state.isLogged = action.payload;
+      state.isLogged = payload;
     }
     );
     builder.addCase(checkLogged.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
-      console.log(action.payload, "action.payload in auth.slice.js checkLogged.rejected");
     });
     builder.addCase(Logout.pending, state => {
       state.isLoading = true;
