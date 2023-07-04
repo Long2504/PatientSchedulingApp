@@ -45,7 +45,6 @@ const ChangePassword = () => {
 
   }
 
-
   return (
     <View style={styles.container}>
       <AppHeader

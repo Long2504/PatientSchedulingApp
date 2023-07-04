@@ -1,15 +1,9 @@
 
 import React from 'react';
-import { View, Text, TouchableOpacity, Modal, ScrollView, TextInput } from 'react-native';
-
+import { View, ScrollView } from 'react-native';
 import { Colors } from '../../constants';
-
-import Auth from '../../utils/helper/auth.helper';
 import AppHeader from '../../components/AppHeader/AppHeader';
 import AppointmentItem from '../../components/AppointmentItem/AppointmentItem';
-
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './ScheduleScreen.style';
 
 

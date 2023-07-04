@@ -90,14 +90,15 @@ const Appointment = ({ navigation: { navigate } }) => {
       date = moment().add(2, 'days').format('YYYY-MM-DD')
     }
     setCurrentDate(date);
-    if (doctor.doctorID && (moment(date).day() !== 0 || moment(date).day() !== 6)) {
-      dispatch(getScheduleByDoctor({ doctorID: doctor.doctorID, appointmentDate: date }));
-      return;
-    }
-    if (speciality.specialityID && (moment(date).day() !== 0 || moment(date).day() !== 6)) {
-      dispatch(getScheduleBySpeciality({ specialityID: speciality.specialityID, appointmentDate: date }));
-      return;
-    }
+    return;
+    // if (doctor.doctorID && (moment(date).day() !== 0 || moment(date).day() !== 6)) {
+    //   dispatch(getScheduleByDoctor({ doctorID: doctor.doctorID, appointmentDate: date }));
+    //   return;
+    // }
+    // if (speciality.specialityID && (moment(date).day() !== 0 || moment(date).day() !== 6)) {
+    //   dispatch(getScheduleBySpeciality({ specialityID: speciality.specialityID, appointmentDate: date }));
+    //   return;
+    // }
   };
 
   const loadingSchedule = (scheduleList, date) => {

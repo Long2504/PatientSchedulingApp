@@ -44,7 +44,6 @@ export const styles = StyleSheet.create({
     paddingBottom: 20,
     marginTop: 10,
     backgroundColor: Colors.WHITE,
-
   },
   methodExamination: {
     flexDirection: 'row',
