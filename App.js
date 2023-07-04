@@ -2,7 +2,10 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { checkLogged } from './src/redux/action/auth.action';
 import { NavigationContainer } from '@react-navigation/native';
-import LoginScreen from './src/screens/Login/LoginScreen';
+import LoginScreen from './src/screens/Auth/LoginScreen';
+import RegisterScreen from './src/screens/Auth/RegisterScreen';
+import ForgotPasswordScreen from './src/screens/Auth/ForgotPasswordScreen';
+import NewPasswordScreen from './src/screens/Auth/NewPasswordScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from "react-redux";
 import store from './src/redux/index.redux';
@@ -10,11 +13,8 @@ import { PaperProvider } from 'react-native-paper';
 import DrawerNavigator from './src/components/navigators/DrawerNavigator';
 import 'react-native-gesture-handler';
 import moment from 'moment';
-import VerifyScreen from './src/screens/verify/VerifyScreen';
-import RegisterScreen from './src/screens/Register/RegisterScreen';
+import VerifyScreen from './src/screens/Auth/VerifyScreen';
 import { getPatientInLocal } from './src/redux/action/patient.action';
-import ForgotPasswordScreen from './src/screens/forgotpassword/ForgotPasswordScreen';
-import NewPasswordScreen from './src/screens/forgotpassword/NewPasswordScreen';
 
 
 const App = () => {

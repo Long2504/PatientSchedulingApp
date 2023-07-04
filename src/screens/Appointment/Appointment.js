@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, Text, TouchableOpacity, Modal, ScrollView, TextInput, Alert } from 'react-native';
 import Button from '../../components/Button';
 import { styles } from './AppointmentStyle';
@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { createAppointmentSchedule, getScheduleByDoctor, getScheduleBySpeciality } from '../../redux/action/schedule.action';
 import { Colors } from '../../constants';
 import Entypo from 'react-native-vector-icons/Entypo';
+import { useFocusEffect } from '@react-navigation/native';
 
 import Auth from '../../utils/helper/auth.helper';
 
@@ -18,6 +19,7 @@ import Auth from '../../utils/helper/auth.helper';
 const Appointment = ({ navigation: { navigate } }) => {
 
   const { speciality, doctor, listSchedule, error } = useSelector(state => state.scheduleSlice);
+  console.log(doctor, "doctor");
   const { patient } = useSelector(state => state.patientSlice);
   const { inforUser } = useSelector((state) => state.authSlice);
   const dayTomorrow = moment().add(1, 'days').format('dddd');
@@ -89,11 +91,11 @@ const Appointment = ({ navigation: { navigate } }) => {
     }
     setCurrentDate(date);
     if (doctor.doctorID && (moment(date).day() !== 0 || moment(date).day() !== 6)) {
-      dispatch(getScheduleByDoctor({ doctorID: doctor.doctorID, appointmentDate: currentDate }));
+      dispatch(getScheduleByDoctor({ doctorID: doctor.doctorID, appointmentDate: date }));
       return;
     }
     if (speciality.specialityID && (moment(date).day() !== 0 || moment(date).day() !== 6)) {
-      dispatch(getScheduleBySpeciality({ specialityID: speciality.specialityID, appointmentDate: currentDate }));
+      dispatch(getScheduleBySpeciality({ specialityID: speciality.specialityID, appointmentDate: date }));
       return;
     }
   };
@@ -110,7 +112,6 @@ const Appointment = ({ navigation: { navigate } }) => {
         </View>
       )
     }
-
     if (scheduleList.length === 14) {
       return (
         <View style={styles.containerScheduleTime}>
@@ -121,7 +122,10 @@ const Appointment = ({ navigation: { navigate } }) => {
               disabled={scheduleList[0] === true && true}
               style={[
                 styles.btnTime,
-                { backgroundColor: currentTime === "08:00" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem }
+                {
+                  backgroundColor: currentTime === "08:00" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem,
+                  opacity: scheduleList[0] === true ? colorOFSchedule.opacityInActive : 1
+                }
               ]}
               textColor={currentTime === "08:00" && Colors.WHITE}
               onPress={() => clickChooseTime("08:00")}
@@ -131,7 +135,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               disabled={scheduleList[1] === true && true}
               style={[
                 styles.btnTime,
-                { backgroundColor: currentTime === "08:30" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem }
+                { backgroundColor: currentTime === "08:30" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem, opacity: scheduleList[1] === true ? colorOFSchedule.opacityInActive : 1 }
               ]}
               textColor={currentTime === "08:30" && Colors.WHITE}
               onPress={() => clickChooseTime("08:30")}
@@ -141,7 +145,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               disabled={scheduleList[2] === true && true}
               style={[
                 styles.btnTime,
-                { backgroundColor: currentTime === "09:00" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem }
+                { backgroundColor: currentTime === "09:00" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem, opacity: scheduleList[2] === true ? colorOFSchedule.opacityInActive : 1 }
               ]}
               onPress={() => clickChooseTime("09:00")}
               textColor={currentTime === "09:00" && Colors.WHITE}
@@ -151,7 +155,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               disabled={scheduleList[3] === true && true}
               style={[
                 styles.btnTime,
-                { backgroundColor: currentTime === "09:30" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem }
+                { backgroundColor: currentTime === "09:30" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem, opacity: scheduleList[3] === true ? colorOFSchedule.opacityInActive : 1 }
               ]}
               onPress={() => clickChooseTime("09:30")}
               textColor={currentTime === "09:30" && Colors.WHITE}
@@ -161,7 +165,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               disabled={scheduleList[4] === true && true}
               style={[
                 styles.btnTime,
-                { backgroundColor: currentTime === "10:00" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem }
+                { backgroundColor: currentTime === "10:00" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem, opacity: scheduleList[4] === true ? colorOFSchedule.opacityInActive : 1 }
               ]}
               onPress={() => clickChooseTime("10:00")}
               textColor={currentTime === "10:00" && Colors.WHITE}
@@ -171,7 +175,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               disabled={scheduleList[5] === true && true}
               style={[
                 styles.btnTime,
-                { backgroundColor: currentTime === "10:30" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem }
+                { backgroundColor: currentTime === "10:30" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem, opacity: scheduleList[5] === true ? colorOFSchedule.opacityInActive : 1 }
               ]}
               onPress={() => clickChooseTime("10:30")}
               textColor={currentTime === "10:30" && Colors.WHITE}
@@ -181,7 +185,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               disabled={scheduleList[6] === true && true}
               style={[
                 styles.btnTime,
-                { backgroundColor: currentTime === "11:00" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem }
+                { backgroundColor: currentTime === "11:00" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem, opacity: scheduleList[6] === true ? colorOFSchedule.opacityInActive : 1 }
               ]}
               onPress={() => clickChooseTime("11:00")}
               textColor={currentTime === "11:00" && Colors.WHITE}
@@ -191,7 +195,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               disabled={scheduleList[7] === true && true}
               style={[
                 styles.btnTime,
-                { backgroundColor: currentTime === "13:00" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem }
+                { backgroundColor: currentTime === "13:00" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem, opacity: scheduleList[7] === true ? colorOFSchedule.opacityInActive : 1 }
               ]}
               onPress={() => clickChooseTime("13:00")}
               textColor={currentTime === "13:00" && Colors.WHITE}
@@ -201,7 +205,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               disabled={scheduleList[8] === true && true}
               style={[
                 styles.btnTime,
-                { backgroundColor: currentTime === "13:30" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem }
+                { backgroundColor: currentTime === "13:30" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem, opacity: scheduleList[8] === true ? colorOFSchedule.opacityInActive : 1 }
               ]}
               onPress={() => clickChooseTime("13:30")}
               textColor={currentTime === "13:30" && Colors.WHITE}
@@ -211,7 +215,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               disabled={scheduleList[9] === true && true}
               style={[
                 styles.btnTime,
-                { backgroundColor: currentTime === "14:00" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem }
+                { backgroundColor: currentTime === "14:00" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem, opacity: scheduleList[9] === true ? colorOFSchedule.opacityInActive : 1 }
               ]}
               onPress={() => clickChooseTime("14:00")}
               textColor={currentTime === "14:00" && Colors.WHITE}
@@ -221,7 +225,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               disabled={scheduleList[10] === true && true}
               style={[
                 styles.btnTime,
-                { backgroundColor: currentTime === "14:30" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem }
+                { backgroundColor: currentTime === "14:30" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem, opacity: scheduleList[10] === true ? colorOFSchedule.opacityInActive : 1 }
               ]}
               onPress={() => clickChooseTime("14:30")}
               textColor={currentTime === "14:30" && Colors.WHITE}
@@ -231,7 +235,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               disabled={scheduleList[11] === true && true}
               style={[
                 styles.btnTime,
-                { backgroundColor: currentTime === "15:00" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem }
+                { backgroundColor: currentTime === "15:00" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem, opacity: scheduleList[11] === true ? colorOFSchedule.opacityInActive : 1 }
               ]}
               onPress={() => clickChooseTime("15:00")}
               textColor={currentTime === "15:00" && Colors.WHITE}
@@ -241,7 +245,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               disabled={scheduleList[12] === true && true}
               style={[
                 styles.btnTime,
-                { backgroundColor: currentTime === "15:30" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem }
+                { backgroundColor: currentTime === "15:30" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem, opacity: scheduleList[12] === true ? colorOFSchedule.opacityInActive : 1 }
               ]}
               onPress={() => clickChooseTime("15:30")}
               textColor={currentTime === "15:30" && Colors.WHITE}
@@ -251,7 +255,7 @@ const Appointment = ({ navigation: { navigate } }) => {
               disabled={scheduleList[13] === true && true}
               style={[
                 styles.btnTime,
-                { backgroundColor: currentTime === "16:00" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem }
+                { backgroundColor: currentTime === "16:00" ? Colors.DEFAULT_CORLOR : colorOFSchedule.inactiveBgrMethodItem, opacity: scheduleList[13] === true ? colorOFSchedule.opacityInActive : 1 }
               ]}
               onPress={() => clickChooseTime("16:00")}
               textColor={currentTime === "16:00" && Colors.WHITE}
@@ -308,12 +312,34 @@ const Appointment = ({ navigation: { navigate } }) => {
       patientID: patientIDget,
     };
     dispatch(createAppointmentSchedule(schedule, "schedule"));
+    Alert.alert("Thông báo", "Đặt lịch thành công");
   }
   const colorOFSchedule = {
     activeBgrMethodItem: '#ddeef2',
     inactiveBgrMethodItem: '#eaeaea',
     colorYellow: '#ffaa2a',
+    opacityInActive: 0.4,
   }
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     const onBackPress = () => {
+  //       Alert.alert("Thông báo", "Bạn có muốn hủy đặt lịch không?", [
+  //         {
+  //           text: "Không",
+  //           onPress: () => null,
+  //           style: "cancel"
+  //         },
+  //         { text: "Có", onPress: () => navigation.goBack() }
+  //       ]);
+  //       return true;
+  //     };
+  //     BackHandler.addEventListener("hardwareBackPress", onBackPress);
+  //     return () =>
+  //       BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+  //   }, [])
+  // );
+
   return (
     <ScrollView style={styles.container} >
       <View style={styles.containerMain}>

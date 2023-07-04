@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ScrollView, View, Text, TouchableOpacity } from 'react-native'
 import { styles } from './MedicalRecord.style'
 import { getAllMedicalRecord } from '../../redux/action/medicalRecord.action'
 import Auth from '../../utils/helper/auth.helper'
+import { useFocusEffect } from '@react-navigation/native'
 function MedicalRecord({ navigation }) {
   const data = [
     {
@@ -159,7 +160,6 @@ function MedicalRecord({ navigation }) {
     const fetchMedicalRecord = async () => {
       try {
         const patientId = await Auth.getIdPatient();
-        console.log(patientId, "patientId");
         if (patientId) {
           dispatch(getAllMedicalRecord({ patientId: patientId }));
         }
@@ -176,9 +176,9 @@ function MedicalRecord({ navigation }) {
     if (list.length > 0) {
       return list.map((medicalRecord, index) => {
         return (
-          <TouchableOpacity key={index} style={styles.medicalRecord} onPress={() => navigation.navigate("MedicalRecordDetail", { medicalRecord })}>
-            <Text style={styles.textMedicalRecord}>{`Thời gian :${medicalRecord.date}`}</Text>
-            <Text>{`Bác sĩ :${medicalRecord.doctor.name}`}</Text>
+          <TouchableOpacity key={index} style={styles.medicalRecord} onPress={() => navigation.navigate("MedicalRecordDetail", { medicalRecord: medicalRecord.Record })}>
+            <Text style={styles.textMedicalRecord}>{`Thời gian :${medicalRecord.Record.date}`}</Text>
+            <Text>{`Bác sĩ :${medicalRecord.Record.doctor.name}`}</Text>
             <Text style={styles.textLinkMR}>Xem thông tin chi tiết hồ sơ</Text>
           </TouchableOpacity>
         )

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { SafeAreaView, Text, View, Alert, Image, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { SafeAreaView, Text, View, Alert, Image, TouchableWithoutFeedback, LayoutAnimation, Platform, Keyboard, UIManager, } from 'react-native';
 import MyTextInput from '../../components/MyTextInput';
 import { styles } from './Login.styles';
 import Button from '../../components/Button';
@@ -9,53 +9,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Login } from '../../redux/action/auth.action';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import logo from "../../../assets/logo.png";
+import { IS_ANDROID } from '../../utils/constants/index.constants';
+
+if (IS_ANDROID && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 const LoginScreen = ({ navigation: { navigate } }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [seePassword, setSeePassword] = useState(true);
-
-  const handleCheckEmail = e => {
-    setUser({ ...user, "username": e })
-    console.log(e);
-    let re = /\S+@\S+\.\S+/;
-    let regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
-
-    // setEmail(e);
-    // if (re.test(e) || regex.test(e)) {
-    //   setCheckValidEmail(false);
-    // } else {
-    //   setCheckValidEmail(true);
-    // }
-  };
-
-  const checkPasswordValidity = value => {
-    const isNonWhiteSpace = /^\S*$/;
-    if (!isNonWhiteSpace.test(value)) {
-      return 'Mật khẩu không bao gồm khoảng trống';
-    }
-    const isValidLength = /^.{8,16}$/;
-    if (!isValidLength.test(value)) {
-      return 'Mật khẩu dài tối thiểu 8 ký tự, và tối đa 16 ký tự.';
-    }
-    const isContainsUppercase = /^(?=.*[A-Z]).*$/;
-    if (!isContainsUppercase.test(value)) {
-      return 'Mật khẩu phải bao gồm chữ viết thường, chữ viết hoa và số.';
-    }
-    const isContainsLowercase = /^(?=.*[a-z]).*$/;
-    if (!isContainsLowercase.test(value)) {
-      return 'Mật khẩu phải bao gồm chữ viết thường, chữ viết hoa và số.';
-    }
-    const isContainsNumber = /^(?=.*[0-9]).*$/;
-    if (!isContainsNumber.test(value)) {
-      return 'Mật khẩu phải bao gồm chữ viết thường, chữ viết hoa và số.';
-    }
-    return null;
-  };
 
   const { error, isLoading } = useSelector(state => state.authSlice)
   const [user, setUser] = useState({ username: '', password: '' });
-
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const dispath = useDispatch();
 
   const handleLogin = () => {
@@ -65,10 +30,44 @@ const LoginScreen = ({ navigation: { navigate } }) => {
       dispath(Login(user))
     }
   };
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      Platform.OS === 'android' ? 'keyboardDidShow' : 'keyboardWillShow',
+      () => {
+        setKeyboardVisible(true);
+      },
+    );
+    const hideSubscription = Keyboard.addListener(
+      Platform.OS === 'android' ? 'keyboardDidHide' : 'keyboardWillHide',
+      () => {
+        setKeyboardVisible(false);
+      },
+    );
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
+  useEffect(() => {
+    if (IS_ANDROID) {
+      LayoutAnimation.configureNext({
+        duration: 200,
+        update: { type: 'easeInEaseOut', property: 'opacity' },
+      });
+    }
+  }, [isKeyboardVisible]);
 
   const handleErrors = () => {
-    if (!error.statusCode) return null;
-    return <Text style={styles.textError}>Tên đăng nhập hoặc mật khẩu không đúng</Text>
+    if (error) {
+      if (error.statusCode === 404) {
+        return 'Tên đăng nhập hoặc mật khẩu không đúng'
+      }
+      if (error.statusCode === 'ECONNABORTED' || error.statusCode === 'ERR_NETWORK') {
+        return "Lỗi kết nối mạng"
+      }
+    }
+    return ''
   };
 
   return (
@@ -78,7 +77,10 @@ const LoginScreen = ({ navigation: { navigate } }) => {
       <SafeAreaView style={styles.main}>
         <View style={styles.container}>
           <View style={styles.top}>
-            <Image source={logo} style={styles.imageLogo} />
+            {!isKeyboardVisible ? (
+              <Image source={logo} style={styles.imageLogo} />
+            ) : null}
+
             <Text style={styles.welcome}>
               Chào mừng quay trở lại với HealthCare
             </Text>
@@ -92,7 +94,6 @@ const LoginScreen = ({ navigation: { navigate } }) => {
                 name="username"
                 placeholder="Tên đăng nhập"
                 onChangeText={e => setUser({ ...user, "username": e })}
-              // style={styles.inputItem}
               />
             </View>
             <View style={styles.wrapperInput}>
@@ -128,9 +129,7 @@ const LoginScreen = ({ navigation: { navigate } }) => {
             onPress={() => navigate('ForgotPasswordScreen')}
           />
           <View style={styles.btnConfirm}>
-            {
-              handleErrors()
-            }
+            <Text style={styles.textError}>{handleErrors()}</Text>
             <Button
               primary
               title={'ĐĂNG NHẬP'}

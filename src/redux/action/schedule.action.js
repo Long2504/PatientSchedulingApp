@@ -16,6 +16,7 @@ export const getScheduleBySpeciality = createAsyncThunk('schedule/get-schedule-s
 
 export const getScheduleByDoctor = createAsyncThunk('schedule/get-schedule-doctor', async (body, { rejectWithValue }) => {
   try {
+    console.log(body, "body");
     const { data } = await ApiCallerPrivate('patient/get-schedule-doctor', 'POST', body);
     return data;
   } catch (error) {

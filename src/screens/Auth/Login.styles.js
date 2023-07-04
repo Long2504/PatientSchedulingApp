@@ -60,7 +60,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     height: '100%',
   },
-  otherContainer: {},
   otherContent: {
     fontFamily: Fonts.POPPINS_BOLD,
     color: Colors.GREEN,
@@ -74,8 +73,7 @@ export const styles = StyleSheet.create({
   },
   textError: {
     color: 'red',
-    marginTop: 5,
-    marginBottom: 10,
+    marginTop: 10,
     textAlign: 'center',
   },
   btnForgot: {
@@ -83,7 +81,6 @@ export const styles = StyleSheet.create({
   },
   btnConfirm: {
     marginTop: 25,
-    height: 50,
     justifyContent: 'center',
   },
   btnRegister: {

@@ -96,7 +96,7 @@ const RegisterScreen = ({ navigation: { navigate } }) => {
     }
     try {
       await dispatch(Register(account)).unwrap();
-      navigate('VerifyScreen');
+      navigate('VerifyScreen', { screen: 'resgiter' });
 
     } catch (err) {
       if (err.statusCode) {

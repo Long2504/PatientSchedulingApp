@@ -6,7 +6,7 @@ import { Text, Image, View } from 'react-native';
 import logo from "../../../assets/logo.png"
 // import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomDrawerContent from '../custom/CustomDrawerContent';
-import ChangePassword from '../../screens/Profile/ChangePassword';
+import ChangePassword from '../../screens/Auth/ChangePassword';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Colors } from '../../constants';

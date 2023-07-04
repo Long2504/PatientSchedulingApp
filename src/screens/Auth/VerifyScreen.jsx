@@ -26,7 +26,6 @@ const VerifyScreen = ({ navigation: { navigate }, route }) => {
   const handleVerify = async () => {
     const otp = code.join('');
     let check = otp ? parseInt(otp) : 0;
-    console.log(typeof check, check);
     if (check < 100000) {
       Alert.alert('Thông báo', 'Nhập đủ 6 số OTP');
       return;
