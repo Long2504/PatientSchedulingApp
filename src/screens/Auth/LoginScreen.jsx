@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { Login } from '../../redux/action/auth.action';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import logo from "../../../assets/logo.png";
+import logo from "../../assets/images/logo.png";
 import { IS_ANDROID } from '../../utils/constants/index.constants';
 
 if (IS_ANDROID && UIManager.setLayoutAnimationEnabledExperimental) {

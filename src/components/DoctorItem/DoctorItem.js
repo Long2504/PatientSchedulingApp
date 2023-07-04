@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import Button from '../Button';
 import { useDispatch } from 'react-redux';
 import { setDoctor, setSpeciality } from '../../redux/slice/schedule.slice';
-import doctorImgae from "../../../assets/images/doctor.jpg"
+import doctorImgae from "../../assets/images/doctor.jpg"
 
 
 

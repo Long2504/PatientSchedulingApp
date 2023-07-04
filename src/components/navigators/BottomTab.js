@@ -9,6 +9,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MedicalRecordNavigator from './MedicalRecordNavigator';
+import HomeNavigator from './HomeNavigator';
 const Tab = createBottomTabNavigator();
 function BottomTab() {
   const styles = {
@@ -45,7 +46,7 @@ function BottomTab() {
     >
       <Tab.Screen
         name="Home"
-        component={Home}
+        component={HomeNavigator}
         options={{
           tabBarLabel: "Trang chủ",
           tabBarIcon: ({ focused }) => (

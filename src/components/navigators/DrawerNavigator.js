@@ -3,7 +3,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import BottomTab from './BottomTab';
 import { Text, Image, View } from 'react-native';
-import logo from "../../../assets/logo.png"
+import logo from "../../assets/images/logo.png";
 // import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomDrawerContent from '../custom/CustomDrawerContent';
 import ChangePassword from '../../screens/Auth/ChangePassword';

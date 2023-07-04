@@ -4,7 +4,7 @@ import { Colors, Fonts } from '../../constants';
 import Avatar from '../Avatar';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import { styles } from './AppointmentItem.styles';
-import doctor from "../../../assets/images/doctor.jpg"
+import doctor from "../../assets/images/doctor.jpg"
 
 import { useNavigation } from '@react-navigation/native';
 
