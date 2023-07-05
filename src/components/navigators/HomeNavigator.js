@@ -12,12 +12,12 @@ function HomeNavigator() {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Speciality"
+        name="SpecialityOfHome"
         component={SpecialityScreenOfHome}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Doctor"
+        name="DoctorOfHome"
         component={DoctorOfHome}
         options={{ headerShown: false }}
       />

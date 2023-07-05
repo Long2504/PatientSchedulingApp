@@ -4,7 +4,7 @@ import { handleErrors } from "../../utils/helper/common.helper";
 
 export const getAllDoctor = createAsyncThunk('doctor/get-all-doctor', async () => {
   try {
-    const { data } = await ApiCallerPrivate('admin/doctor/get-all-doctor', 'GET', null,);
+    const { data } = await ApiCallerPrivate('admin/doctor/get-all-doctor', 'GET', null);
     return data;
   } catch (error) {
     return handleErrors(error);

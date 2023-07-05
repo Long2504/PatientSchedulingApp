@@ -22,10 +22,8 @@ function BottomTab() {
 
   return (
     <Tab.Navigator
-      tabBarOptions={{
-        keyboardHidesTabBar: true
-      }}
       screenOptions={{
+        tabBarHideOnKeyboard: true,
         tabBarStyle: {
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
