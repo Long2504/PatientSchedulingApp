@@ -3,14 +3,15 @@ import { Fonts, Colors } from '../../constants';
 
 export const styles = StyleSheet.create({
   container: {
-    height: 100,
+    height: 90,
     position: 'relative',
+    backgroundColor: Colors.WHITE,
     borderRadius: 12,
-    borderWidth: 0.5,
+    // borderWidth: 0.5,
     borderColor: Colors.DEFAULT_LIGHT_CORLOR,
-    marginTop: 10,
-    padding: 15,
-    justifyContent: 'center',
+    marginTop: 12,
+    padding: 10,
+    // justifyContent: 'center',
     borderColor: "black",
   },
   btnInfo: {

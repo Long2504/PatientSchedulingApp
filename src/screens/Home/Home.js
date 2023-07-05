@@ -46,13 +46,13 @@ const Home = ({ navigation: { navigate } }) => {
               </View>
               <Text style={styles.textItemContainer}>Lịch hẹn</Text>
             </View>
-            <TouchableOpacity style={styles.itemContainer} onPress={() => navigate("Doctor")}>
+            <TouchableOpacity style={styles.itemContainer} onPress={() => navigate("DoctorOfHome")}>
               <View style={styles.itemIcon}>
                 <MaterialCommunityIcons name='doctor' size={25} color={Colors.DEFAULT_CORLOR} />
               </View>
               <Text style={styles.textItemContainer}>Bác sĩ</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.itemContainer} onPress={() => navigate("Speciality")}>
+            <TouchableOpacity style={styles.itemContainer} onPress={() => navigate("SpecialityOfHome")}>
               <View style={styles.itemIcon}>
                 <MaterialCommunityIcons name='account-multiple-outline' size={25} color={Colors.DEFAULT_CORLOR} />
               </View>

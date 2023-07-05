@@ -3,7 +3,7 @@ import { Colors } from '../../constants';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.WHITE,
+    // backgroundColor: Colors.WHITE,
   },
   headerSearch: {
     height: 50,
@@ -11,7 +11,6 @@ export const styles = StyleSheet.create({
     paddingLeft: 10,
     borderBottomWidth: 0.5,
     borderTopWidth: 0.5,
-    marginTop: 10,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
@@ -40,8 +39,8 @@ export const styles = StyleSheet.create({
   },
   containerMain: {
     width: '100%',
-    backgroundColor: Colors.WHITE,
-    paddingHorizontal: '5%',
+    // backgroundColor: Colors.WH,
+    paddingHorizontal: 12,
   },
   modalContainer: {
     flex: 1,
@@ -67,9 +66,7 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
   },
   description: {
-    textAlign: 'left',
-    fontSize: 15,
-    lineHeight: 20,
+    height: 300,
   },
   btnClose: {
     width: 100,
