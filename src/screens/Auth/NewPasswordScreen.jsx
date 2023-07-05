@@ -46,7 +46,7 @@ const NewPasswordScreen = ({ navigation: { navigate } }) => {
     }
 
   }
-  console.log(password);
+
 
 
   return (

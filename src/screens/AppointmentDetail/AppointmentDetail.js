@@ -1,11 +1,10 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {Colors} from '../../constants';
+import { View, Text, StyleSheet } from 'react-native';
+import { Colors } from '../../constants';
 
-const AppointmentDetail = ({route}) => {
+const AppointmentDetail = ({ route }) => {
   // id === 0 ? create : update
-  const {id} = route.params;
-  console.log(id);
+  const { id } = route.params;
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{id}</Text>

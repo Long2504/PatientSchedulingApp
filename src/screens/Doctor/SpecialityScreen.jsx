@@ -7,6 +7,7 @@ import { View, ScrollView, TextInput, Modal, Text, TouchableOpacity } from "reac
 import SpecialityItem from "../../components/SpecialityItem/SpecialityItem";
 import { setSpeciality } from "../../redux/slice/schedule.slice";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { setDoctor } from "../../redux/slice/schedule.slice";
 import { styles } from "./Speciality.styles";
 
 
@@ -18,6 +19,7 @@ function SpecialityScreen({ navigation }) {
 
   const handleClickSpecialty = (item) => {
     dispatch(setSpeciality({ specialityID: item._id, specialityName: item.name }));
+    dispatch(setDoctor({}));
     navigation.navigate('Doctor');
   }
   const handleClickModal = (item) => {

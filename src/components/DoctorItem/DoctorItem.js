@@ -10,7 +10,6 @@ import doctorImgae from "../../assets/images/doctor.jpg"
 const DoctorItem = ({ doctor, navigation }) => {
   const dispatch = useDispatch();
   const handleClickDoctor = (item) => {
-    console.log(item, "item");
     dispatch(setDoctor({ doctorID: item._id, doctorName: item.name }));
     dispatch(setSpeciality({ specialityID: item.specialityID._id, specialityName: item.specialityID.name }));
     navigation.navigate('Appointment');

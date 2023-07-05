@@ -14,14 +14,12 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { useFocusEffect } from '@react-navigation/native';
 
 import Auth from '../../utils/helper/auth.helper';
+import { setSpeciality } from '../../redux/slice/schedule.slice';
 
 
 const Appointment = ({ navigation: { navigate } }) => {
 
   const { speciality, doctor, listSchedule, error } = useSelector(state => state.scheduleSlice);
-  console.log(doctor, "doctor");
-  const { patient } = useSelector(state => state.patientSlice);
-  const { inforUser } = useSelector((state) => state.authSlice);
   const dayTomorrow = moment().add(1, 'days').format('dddd');
   const dateTomorrow = moment().add(1, 'days').format('DD');
   const monthTomorrow = moment().add(1, 'days').format('M');
@@ -30,15 +28,30 @@ const Appointment = ({ navigation: { navigate } }) => {
   const monthAfterTomorrow = moment().add(2, 'days').format('M');
   const [isModalVisible, setModalVisible] = useState(false);
   const [currentDate, setCurrentDate] = useState('');
+  const [currentTime, setCurrentTime] = useState('');
   const [currentMethod, setCurrentMethod] = useState(0);
+  const [indexClickTime, setIndexClickTime] = useState(0);
   const dispatch = useDispatch();
 
+  const handleMethodSelect = (method) => {
+    setCurrentMethod(method);
+  };
+
+  const handleChoseDoctor = () => {
+    if (currentMethod === 1) {
+      dispatch(setSpeciality({}));
+    }
+    navigate('Doctor');
+  };
+
   const handleDateSelect = (date) => {
+    setCurrentTime('');
     setCurrentDate(date);
     setModalVisible(false);
     setIndexClickTime(3);
     var date = moment(date).format('YYYY-MM-DD');
     if (!date) return;
+    if (currentMethod == 0) return;
     if (doctor.doctorID && (moment(date).day() !== 0 || moment(date).day() !== 6)) {
       dispatch(getScheduleByDoctor({ doctorID: doctor.doctorID, date: date }));
       return;
@@ -78,9 +91,8 @@ const Appointment = ({ navigation: { navigate } }) => {
     )
   }
 
-  const [indexClickTime, setIndexClickTime] = useState(0);
-
   const handleGetSchedule = (type) => {
+    setCurrentTime('');
     setIndexClickTime(type);
     let date = '';
     if (type === 1) {
@@ -90,15 +102,14 @@ const Appointment = ({ navigation: { navigate } }) => {
       date = moment().add(2, 'days').format('YYYY-MM-DD')
     }
     setCurrentDate(date);
-    return;
-    // if (doctor.doctorID && (moment(date).day() !== 0 || moment(date).day() !== 6)) {
-    //   dispatch(getScheduleByDoctor({ doctorID: doctor.doctorID, appointmentDate: date }));
-    //   return;
-    // }
-    // if (speciality.specialityID && (moment(date).day() !== 0 || moment(date).day() !== 6)) {
-    //   dispatch(getScheduleBySpeciality({ specialityID: speciality.specialityID, appointmentDate: date }));
-    //   return;
-    // }
+    if (doctor.doctorID && (moment(date).day() !== 0 || moment(date).day() !== 6)) {
+      dispatch(getScheduleByDoctor({ doctorID: doctor.doctorID, appointmentDate: date }));
+      return;
+    }
+    if (speciality.specialityID && (moment(date).day() !== 0 || moment(date).day() !== 6)) {
+      dispatch(getScheduleBySpeciality({ specialityID: speciality.specialityID, appointmentDate: date }));
+      return;
+    }
   };
 
   const loadingSchedule = (scheduleList, date) => {
@@ -113,7 +124,7 @@ const Appointment = ({ navigation: { navigate } }) => {
         </View>
       )
     }
-    if (scheduleList.length === 14) {
+    if (scheduleList.length === 14 && currentMethod !== 0) {
       return (
         <View style={styles.containerScheduleTime}>
           <Text style={styles.titleContainer}>Giờ khám mong muốn</Text>
@@ -267,7 +278,6 @@ const Appointment = ({ navigation: { navigate } }) => {
       )
     }
   }
-  const [currentTime, setCurrentTime] = useState('');
 
   const clickChooseTime = (time) => {
     setCurrentTime(time);
@@ -276,6 +286,7 @@ const Appointment = ({ navigation: { navigate } }) => {
 
   const handleBookSchedule = async () => {
     const patientIDget = await Auth.getIdPatient();
+    const userInfo = await Auth.getUserInfo();
     if (currentMethod === 0) {
       Alert.alert("Thông báo", "Vui lòng chọn phương thức khám");
       return;
@@ -300,7 +311,11 @@ const Appointment = ({ navigation: { navigate } }) => {
       Alert.alert("Thông báo", "Vui lòng nhập lý do khám");
       return;
     }
-    if (!inforUser.name || !inforUser.phone || !inforUser.email || !inforUser.address || !inforUser.dateOfBirth) {
+    if (!patientIDget) {
+      Alert.alert("Thông báo", "Vui lòng vào mục hồ sơ để cập nhật thông tin cá nhân trước khi đăng ký khám");
+      return;
+    }
+    if (!userInfo.name || !userInfo.phone || !userInfo.address || !userInfo.dateOfBirth) {
       Alert.alert("Thông báo", "Vui lòng cập nhật thông tin cá nhân");
       return;
     }
@@ -315,6 +330,7 @@ const Appointment = ({ navigation: { navigate } }) => {
     dispatch(createAppointmentSchedule(schedule, "schedule"));
     Alert.alert("Thông báo", "Đặt lịch thành công");
   }
+
   const colorOFSchedule = {
     activeBgrMethodItem: '#ddeef2',
     inactiveBgrMethodItem: '#eaeaea',
@@ -361,7 +377,7 @@ const Appointment = ({ navigation: { navigate } }) => {
                 }
               ]}
               textColor={currentMethod === 1 && Colors.DEFAULT_CORLOR}
-              onPress={() => setCurrentMethod(1)}
+              onPress={() => handleMethodSelect(1)}
             />
             <Button title="Đặt lịch theo chuyên khoa"
               style={[
@@ -372,12 +388,12 @@ const Appointment = ({ navigation: { navigate } }) => {
                 },
               ]}
               textColor={currentMethod === 2 && Colors.DEFAULT_CORLOR}
-              onPress={() => setCurrentMethod(2)}
+              onPress={() => handleMethodSelect(2)}
             />
           </View>
           {currentMethod !== 0 && <View>
             {(speciality.specialityName || currentMethod === 2) && <Button title={speciality.specialityName ? speciality.specialityName : 'Chọn chuyên khoa'} disabled={(doctor.doctorName && currentMethod === 1) && true} style={styles.btnMethodItem} onPress={() => navigate('Speciality')} />}
-            {(doctor.doctorName || currentMethod === 1) && <Button title={doctor.doctorName ? doctor.doctorName : 'Chọn bác sĩ'} style={styles.btnMethodItem} onPress={() => navigate('Doctor')} />}
+            {(doctor.doctorName || currentMethod === 1) && <Button title={doctor.doctorName ? doctor.doctorName : 'Chọn bác sĩ'} style={styles.btnMethodItem} onPress={() => handleChoseDoctor()} />}
           </View>}
         </View>
         <View style={styles.containerSchedule}>
@@ -441,7 +457,6 @@ const Appointment = ({ navigation: { navigate } }) => {
       </View>
       {renderModal()}
     </ScrollView >
-
   );
 };
 

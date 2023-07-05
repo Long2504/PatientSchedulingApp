@@ -1,4 +1,4 @@
-import React, { useEffect,useCallback } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ScrollView, View, Text, TouchableOpacity } from 'react-native'
 import { styles } from './MedicalRecord.style'
@@ -6,170 +6,26 @@ import { getAllMedicalRecord } from '../../redux/action/medicalRecord.action'
 import Auth from '../../utils/helper/auth.helper'
 import { useFocusEffect } from '@react-navigation/native'
 function MedicalRecord({ navigation }) {
-  const data = [
-    {
-      date: '12-12-2020',
-      diagosisOfDoctor: 'Bệnh nhân bị viêm phổi (chuẩn đoán của bác sĩ)',
-      diseaseProgression: 'Tiến trình bệnh',
-      docType: 'patient',
-      doctor: { doctorID: '123456789', name: 'Bùi Ngọc Phương Hòa' },
-      medicalRecordID: 5,
-      note: 'Ghi chú',
-      patientID: '12233456789',
-      prescription: 'Đơn thuốc',
-      symptonOfDisease: 'Khó thở (triệu chứng)',
-      treatmentProcess: 'Quá trình điều trị'
-    },
-    {
-      date: '12-12-2020',
-      diagosisOfDoctor: 'Bệnh nhân bị viêm phổi (chuẩn đoán của bác sĩ)',
-      diseaseProgression: 'Tiến trình bệnh',
-      docType: 'patient',
-      doctor: { doctorID: '123456789', name: 'Bùi Ngọc Phương Hòa' },
-      medicalRecordID: 5,
-      note: 'Ghi chú',
-      patientID: '12233456789',
-      prescription: 'Đơn thuốc',
-      symptonOfDisease: 'Khó thở (triệu chứng)',
-      treatmentProcess: 'Quá trình điều trị'
-    },
-    {
-      date: '12-12-2020',
-      diagosisOfDoctor: 'Bệnh nhân bị viêm phổi (chuẩn đoán của bác sĩ)',
-      diseaseProgression: 'Tiến trình bệnh',
-      docType: 'patient',
-      doctor: { doctorID: '123456789', name: 'Bùi Ngọc Phương Hòa' },
-      medicalRecordID: 5,
-      note: 'Ghi chú',
-      patientID: '12233456789',
-      prescription: 'Đơn thuốc',
-      symptonOfDisease: 'Khó thở (triệu chứng)',
-      treatmentProcess: 'Quá trình điều trị'
-    },
-    {
-      date: '12-12-2020',
-      diagosisOfDoctor: 'Bệnh nhân bị viêm phổi (chuẩn đoán của bác sĩ)',
-      diseaseProgression: 'Tiến trình bệnh',
-      docType: 'patient',
-      doctor: { doctorID: '123456789', name: 'Bùi Ngọc Phương Hòa' },
-      medicalRecordID: 5,
-      note: 'Ghi chú',
-      patientID: '12233456789',
-      prescription: 'Đơn thuốc',
-      symptonOfDisease: 'Khó thở (triệu chứng)',
-      treatmentProcess: 'Quá trình điều trị'
-    },
-    {
-      date: '12-12-2020',
-      diagosisOfDoctor: 'Bệnh nhân bị viêm phổi (chuẩn đoán của bác sĩ)',
-      diseaseProgression: 'Tiến trình bệnh',
-      docType: 'patient',
-      doctor: { doctorID: '123456789', name: 'Bùi Ngọc Phương Hòa' },
-      medicalRecordID: 5,
-      note: 'Ghi chú',
-      patientID: '12233456789',
-      prescription: 'Đơn thuốc',
-      symptonOfDisease: 'Khó thở (triệu chứng)',
-      treatmentProcess: 'Quá trình điều trị'
-    },
-    {
-      date: '12-12-2020',
-      diagosisOfDoctor: 'Bệnh nhân bị viêm phổi (chuẩn đoán của bác sĩ)',
-      diseaseProgression: 'Tiến trình bệnh',
-      docType: 'patient',
-      doctor: { doctorID: '123456789', name: 'Bùi Ngọc Phương Hòa' },
-      medicalRecordID: 5,
-      note: 'Ghi chú',
-      patientID: '12233456789',
-      prescription: 'Đơn thuốc',
-      symptonOfDisease: 'Khó thở (triệu chứng)',
-      treatmentProcess: 'Quá trình điều trị'
-    },
-    {
-      date: '12-12-2020',
-      diagosisOfDoctor: 'Bệnh nhân bị viêm phổi (chuẩn đoán của bác sĩ)',
-      diseaseProgression: 'Tiến trình bệnh',
-      docType: 'patient',
-      doctor: { doctorID: '123456789', name: 'Bùi Ngọc Phương Hòa' },
-      medicalRecordID: 5,
-      note: 'Ghi chú',
-      patientID: '12233456789',
-      prescription: 'Đơn thuốc',
-      symptonOfDisease: 'Khó thở (triệu chứng)',
-      treatmentProcess: 'Quá trình điều trị'
-    },
-    {
-      date: '12-12-2020',
-      diagosisOfDoctor: 'Bệnh nhân bị viêm phổi (chuẩn đoán của bác sĩ)',
-      diseaseProgression: 'Tiến trình bệnh',
-      docType: 'patient',
-      doctor: { doctorID: '123456789', name: 'Bùi Ngọc Phương Hòa' },
-      medicalRecordID: 5,
-      note: 'Ghi chú',
-      patientID: '12233456789',
-      prescription: 'Đơn thuốc',
-      symptonOfDisease: 'Khó thở (triệu chứng)',
-      treatmentProcess: 'Quá trình điều trị'
-    },
-    {
-      date: '12-12-2020',
-      diagosisOfDoctor: 'Bệnh nhân bị viêm phổi (chuẩn đoán của bác sĩ)',
-      diseaseProgression: 'Tiến trình bệnh',
-      docType: 'patient',
-      doctor: { doctorID: '123456789', name: 'Bùi Ngọc Phương Hòa' },
-      medicalRecordID: 5,
-      note: 'Ghi chú',
-      patientID: '12233456789',
-      prescription: 'Đơn thuốc',
-      symptonOfDisease: 'Khó thở (triệu chứng)',
-      treatmentProcess: 'Quá trình điều trị'
-    },
-    {
-      date: '12-12-2020',
-      diagosisOfDoctor: 'Bệnh nhân bị viêm phổi (chuẩn đoán của bác sĩ)',
-      diseaseProgression: 'Tiến trình bệnh',
-      docType: 'patient',
-      doctor: { doctorID: '123456789', name: 'Bùi Ngọc Phương Hòa' },
-      medicalRecordID: 5,
-      note: 'Ghi chú',
-      patientID: '12233456789',
-      prescription: 'Đơn thuốc',
-      symptonOfDisease: 'Khó thở (triệu chứng)',
-      treatmentProcess: 'Quá trình điều trị'
-    },
-    {
-      date: '12-12-2020',
-      diagosisOfDoctor: 'Bệnh nhân bị viêm phổi (chuẩn đoán của bác sĩ)',
-      diseaseProgression: 'Tiến trình bệnh',
-      docType: 'patient',
-      doctor: { doctorID: '123456789', name: 'Bùi Ngọc Phương Hòa' },
-      medicalRecordID: 5,
-      note: 'Ghi chú',
-      patientID: '12233456789',
-      prescription: 'Đơn thuốc',
-      symptonOfDisease: 'Khó thở (triệu chứng)',
-      treatmentProcess: 'Quá trình điều trị'
-    },
-  ]
-
   const { listMedicalRecord, error } = useSelector(state => state.medicalRecordSlice);
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const fetchMedicalRecord = async () => {
-      try {
-        const patientId = await Auth.getIdPatient();
-        if (patientId) {
-          dispatch(getAllMedicalRecord({ patientId: patientId }));
+  useFocusEffect(
+    useCallback(() => {
+      const fetchMedicalRecord = async () => {
+        try {
+          const patientId = await Auth.getIdPatient();
+          if (patientId) {
+            dispatch(getAllMedicalRecord({ patientId: patientId }));
+          }
+        } catch (error) {
+          console.error(error);
         }
-      } catch (error) {
-        console.error(error);
-      }
-    };
+      };
 
-    fetchMedicalRecord();
-  }, [])
+      fetchMedicalRecord();
+    }, []),
+  );
 
 
   const loadMedicalRecord = (list) => {

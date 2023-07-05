@@ -9,4 +9,4 @@ export const LOCAL = {
 };
 
 // export const BASE_API = 'http://45.32.28.204:8081';
-export const BASE_API = 'https://160b-42-1-94-27.ngrok-free.app';
+export const BASE_API = 'https://31c5-42-1-94-27.ngrok-free.app';

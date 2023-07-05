@@ -31,44 +31,6 @@ const Doctor = ({ navigation }) => {
     dispatch(setDoctor({}));
     navigation.navigate('Appointment');
   };
-  // const sortDoctor = (sortType) => {
-  //   let listProducts = [...newListProduct];
-  //   if (sortType === -1) {
-  //     return;
-  //   }
-  //   if (sortType === 0) {
-  //     setNewListProduct(
-  //       listProducts.sort((a, b) => {
-  //         return a.lst_price - b.lst_price;
-  //       }),
-  //     );
-  //     return;
-  //   }
-  //   if (sortType === 1) {
-  //     setNewListProduct(
-  //       listProducts.sort((a, b) => {
-  //         return b.lst_price - a.lst_price;
-  //       }),
-  //     );
-  //     return;
-  //   }
-  //   if (sortType === 2) {
-  //     setNewListProduct(
-  //       listProducts.sort((a, b) => {
-  //         return a.name.localeCompare(b.name);
-  //       }),
-  //     );
-  //     return;
-  //   }
-  //   if (sortType === 3) {
-  //     setNewListProduct(
-  //       listProducts.sort((a, b) => {
-  //         return b.name.localeCompare(a.name);
-  //       }),
-  //     );
-  //     return;
-  //   }
-  // };
 
   return (
     <Fragment>

@@ -20,9 +20,6 @@ const DoctorOfHome = ({ navigation }) => {
   const [filter, setFilter] = useState({ category: -1, search: '' });
   useEffect(() => {
     dispatch(getAllDoctor());
-    if (speciality.specialityID) {
-      dispatch(getAllDoctorBySpecialty({ specialtyID: speciality.specialityID }));
-    }
   }, []);
 
 
