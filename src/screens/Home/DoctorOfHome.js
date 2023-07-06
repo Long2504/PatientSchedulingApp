@@ -6,7 +6,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import DoctorItem from '../../components/DoctorItem/DoctorItem';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllDoctor, getAllDoctorBySpecialty } from '../../redux/action/doctor.action';
-import { setDoctor } from '../../redux/slice/schedule.slice';
 import { styles } from './Doctor.styles';
 import SelectDropdown from 'react-native-select-dropdown';
 const DoctorOfHome = ({ navigation }) => {
@@ -94,75 +93,80 @@ const DoctorOfHome = ({ navigation }) => {
         iconColor={Colors.BLACK}
         titleAlight={'center'}
       />
-      <View style={styles.headerSearch}>
-        <View style={styles.search}>
-          <MaterialIcons
-            style={styles.icon}
-            name="search"
-            size={24}
-            color="black"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Tìm kiếm"
-            onChange={e => search(e.nativeEvent.text)}
-          />
-        </View>
-        <SelectDropdown
-          ref={dropdownRef}
-          data={['Tên A đến Z', 'Tên Z đến A', 'Khoa A đến Z', 'Khoa Z đến A']}
-          onSelect={(selectedItem, index) => {
-            sort(index);
-          }}
+      {
+        loading ? (
+          <ActivityIndicator size="large" color={Colors.BLUE} style={{ flex: 1 }} />
+        ) : (
+          <>
+            <View style={styles.headerSearch}>
+              <View style={styles.search}>
+                <MaterialIcons
+                  style={styles.icon}
+                  name="search"
+                  size={24}
+                  color="black"
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Tìm kiếm"
+                  onChange={e => search(e.nativeEvent.text)}
+                />
+              </View>
+              <SelectDropdown
+                ref={dropdownRef}
+                data={['Tên A đến Z', 'Tên Z đến A', 'Khoa A đến Z', 'Khoa Z đến A']}
+                onSelect={(selectedItem, index) => {
+                  sort(index);
+                }}
 
-          defaultButtonText={
-            <MaterialIcons name="sort" size={24} color="black" />
-          }
-          buttonTextAfterSelection={() => {
-            return <MaterialIcons name="sort" size={24} color="black" />;
-          }}
-          buttonStyle={{
-            width: '15%',
-            height: 30,
-            backgroundColor: 'white',
-          }}
-          buttonTextStyle={{
-            fontSize: 14,
-            color: 'black',
-          }}
-          dropdownStyle={{
-            height: 160,
-            width: 200,
-            backgroundColor: 'white',
-            marginLeft: -105,
-          }}
-          dropdownOverlayColor="rgba(0,0,0,0)"
-          selectedRowTextStyle={{
-            color: '#003893',
-            fontWeight: 'bold',
-          }}
-          rowStyle={{
-            height: 40,
-            backgroundColor: 'white',
-            paddingLeft: 10,
-          }}
-          rowTextStyle={{
-            fontSize: 14,
-            color: 'black',
-            textAlign: 'left',
-          }}
-        />
-      </View>
-      <ScrollView style={{ width: '100%', paddingTop: 5, paddingHorizontal: 5 }}>
-        {loading && (
-          <ActivityIndicator size="large" color={Colors.BLUE} />
-        )}
-        {listDoctorFilter.map((item, index) => {
-          return (
-            <DoctorItem key={index} doctor={item} navigation={navigation} />
-          );
-        })}
-      </ScrollView>
+                defaultButtonText={
+                  <MaterialIcons name="sort" size={24} color="black" />
+                }
+                buttonTextAfterSelection={() => {
+                  return <MaterialIcons name="sort" size={24} color="black" />;
+                }}
+                buttonStyle={{
+                  width: '15%',
+                  height: 30,
+                  backgroundColor: 'white',
+                }}
+                buttonTextStyle={{
+                  fontSize: 14,
+                  color: 'black',
+                }}
+                dropdownStyle={{
+                  height: 160,
+                  width: 200,
+                  backgroundColor: 'white',
+                  marginLeft: -105,
+                }}
+                dropdownOverlayColor="rgba(0,0,0,0)"
+                selectedRowTextStyle={{
+                  color: '#003893',
+                  fontWeight: 'bold',
+                }}
+                rowStyle={{
+                  height: 40,
+                  backgroundColor: 'white',
+                  paddingLeft: 10,
+                }}
+                rowTextStyle={{
+                  fontSize: 14,
+                  color: 'black',
+                  textAlign: 'left',
+                }}
+              />
+            </View>
+            <ScrollView style={{ width: '100%', paddingTop: 5, paddingHorizontal: 5 }}>
+              {listDoctorFilter.map((item, index) => {
+                return (
+                  <DoctorItem key={index} doctor={item} navigation={navigation} />
+                );
+              })}
+            </ScrollView>
+          </>
+        )
+      }
     </Fragment>
   );
 };

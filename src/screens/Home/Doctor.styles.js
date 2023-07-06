@@ -4,11 +4,11 @@ export const styles = StyleSheet.create({
     height: 50,
     width: '100%',
     paddingLeft: 10,
-    borderBottomWidth: 0.5,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#fff',
+    borderBottomWidth: 0.5,
     borderTopWidth: 0.5,
   },
   search: {
@@ -16,12 +16,12 @@ export const styles = StyleSheet.create({
     height: 40,
     flexDirection: 'row',
     borderColor: '#000000',
-    borderWidth: 0.5,
     borderRadius: 20,
     paddingLeft: 5,
     paddingRight: 20,
     justifyContent: 'flex-start',
     alignItems: 'center',
+    borderWidth: 0.5,
   },
   icon: {
     width: '10%',
@@ -32,5 +32,9 @@ export const styles = StyleSheet.create({
   input: {
     width: '90%',
     textAlignVertical: 'center',
+    height: '100%',
+    fontSize: 14,
+    color: 'black',
+    borderWidth: 0,
   },
 });

@@ -2,15 +2,13 @@ import { Text, TouchableOpacity } from 'react-native';
 import { styles } from './SpecialityItem.style';
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-const SpecialityItem = ({
+const SpecialityItemOfHome = ({
   specialty,
-  handleClickSpecialty,
   handleClickModal,
 }) => {
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() => handleClickSpecialty(specialty)}
     >
       <Text style={styles.textNameSpeciality}>
         {specialty.name}
@@ -35,4 +33,4 @@ const SpecialityItem = ({
   );
 };
 
-export default SpecialityItem;
+export default SpecialityItemOfHome;

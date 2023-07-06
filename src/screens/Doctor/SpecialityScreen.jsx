@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { getAllSpecialty } from "../../redux/action/doctor.action";
 import AppHeader from "../../components/AppHeader/AppHeader";
 import Colors from '../../constants/Colors';
-import { View, ScrollView, TextInput, Modal, Text, TouchableOpacity } from "react-native";
+import { View, ScrollView, TextInput, Modal, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 import SpecialityItem from "../../components/SpecialityItem/SpecialityItem";
 import { setSpeciality } from "../../redux/slice/schedule.slice";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -13,7 +13,7 @@ import { styles } from "./Speciality.styles";
 
 function SpecialityScreen({ navigation }) {
   const dispatch = useDispatch()
-  const { listSpecialty } = useSelector((state) => state.doctorSlice);
+  const { listSpecialty, loading } = useSelector((state) => state.doctorSlice);
   const [isModalVisible, setModalVisible] = useState(false);
   const [specialtyCurrent, setSpecialtyCurrent] = useState({});
 
@@ -56,34 +56,38 @@ function SpecialityScreen({ navigation }) {
         iconColor={Colors.BLACK}
         titleAlight={'center'}
       />
-      <View style={styles.container}>
-        <View style={styles.headerSearch}>
-          <View style={styles.search}>
-            <MaterialIcons
-              style={styles.icon}
-              name="search"
-              size={24}
-              color="black"
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Tìm kiếm"
-            />
-          </View>
-        </View>
-        <ScrollView style={styles.containerMain}>
-          {listSpecialty.map((item, index) => (
-            <SpecialityItem
-              key={index}
-              specialty={item}
-              handleClickSpecialty={() => handleClickSpecialty(item)}
-              handleClickModal={() => handleClickModal(item)}
-            />
-          ))}
-        </ScrollView>
-        {renderModal()}
-      </View>
-
+      {
+        loading ? <ActivityIndicator size="large" color={Colors.BLUE} style={{ flex: 1 }} /> :
+          <>
+            <View style={styles.container}>
+              <View style={styles.headerSearch}>
+                <View style={styles.search}>
+                  <MaterialIcons
+                    style={styles.icon}
+                    name="search"
+                    size={24}
+                    color="black"
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Tìm kiếm"
+                  />
+                </View>
+              </View>
+              <ScrollView style={styles.containerMain}>
+                {listSpecialty.map((item, index) => (
+                  <SpecialityItem
+                    key={index}
+                    specialty={item}
+                    handleClickSpecialty={() => handleClickSpecialty(item)}
+                    handleClickModal={() => handleClickModal(item)}
+                  />
+                ))}
+              </ScrollView>
+              {renderModal()}
+            </View>
+          </>
+      }
     </View>
   )
 }

@@ -16,7 +16,7 @@ const Drawer = createDrawerNavigator();
 function DrawerNavigator() {
   return (
     <Drawer.Navigator
-      initialRouteName="Home"
+      initialRouteName="BottomTab"
       screenOptions={{
         drawerItemStyle: {
           borderBottomColor: '#0000001A',

@@ -3,7 +3,6 @@ import { Colors } from '../../constants';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: Colors.WHITE,
   },
   headerSearch: {
     height: 50,
@@ -14,6 +13,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
+    zIndex: 1,
   },
   search: {
     width: '85%',
@@ -39,7 +39,7 @@ export const styles = StyleSheet.create({
   },
   containerMain: {
     width: '100%',
-    // backgroundColor: Colors.WH,
+    height: '100%',
     paddingHorizontal: 12,
   },
   modalContainer: {
@@ -66,7 +66,7 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
   },
   description: {
-    height: 300,
+    height: 400,
   },
   btnClose: {
     width: 100,

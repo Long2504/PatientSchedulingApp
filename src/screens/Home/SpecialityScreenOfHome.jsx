@@ -1,6 +1,6 @@
-import React, {useEffect, useState, useRef} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {getAllSpecialty} from '../../redux/action/doctor.action';
+import React, { useEffect, useState, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllSpecialty } from '../../redux/action/doctor.action';
 import AppHeader from '../../components/AppHeader/AppHeader';
 import Colors from '../../constants/Colors';
 import {
@@ -12,22 +12,22 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import SpecialityItem from '../../components/SpecialityItem/SpecialityItem';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {styles} from './Speciality.styles';
+import { styles } from './Speciality.styles';
 import SelectDropdown from 'react-native-select-dropdown';
+import SpecialityItemOfHome from '../../components/SpecialityItem/SpecialityItemOfHome';
 
-function SpecialityScreenOfHome({navigation}) {
+function SpecialityScreenOfHome({ navigation }) {
   const dispatch = useDispatch();
   const dropdownRef = useRef(null);
-  const {listSpecialty, loading} = useSelector(state => state.doctorSlice);
+  const { listSpecialty, loading } = useSelector(state => state.doctorSlice);
   const [isModalVisible, setModalVisible] = useState(false);
   const [specialtyCurrent, setSpecialtyCurrent] = useState({});
   const [listSpecialtyFilter, setListSpecialtyFilter] = useState([]);
 
   useEffect(() => {
+    dispatch(getAllSpecialty());
     if (listSpecialty.length === 0) {
-      dispatch(getAllSpecialty());
     }
   }, []);
 
@@ -102,7 +102,7 @@ function SpecialityScreenOfHome({navigation}) {
   }
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <AppHeader
         back
         title={'Khoa'}
@@ -110,78 +110,78 @@ function SpecialityScreenOfHome({navigation}) {
         iconColor={Colors.BLACK}
         titleAlight={'center'}
       />
-      <View style={styles.container}>
-        <View style={styles.headerSearch}>
-          <View style={styles.search}>
-            <MaterialIcons
-              style={styles.icon}
-              name="search"
-              size={24}
-              color="black"
-            />
-            <TextInput style={styles.input} placeholder="Tìm kiếm" onChange={(e)=>{search(e.nativeEvent.text)}}/>
+      {
+        loading ? <ActivityIndicator size="large" color={Colors.BLUE} style={{ flex: 1 }} /> :
+          <View style={styles.container}>
+            <View style={styles.headerSearch}>
+              <View style={styles.search}>
+                <MaterialIcons
+                  style={styles.icon}
+                  name="search"
+                  size={24}
+                  color="black"
+                />
+                <TextInput style={styles.input} placeholder="Tìm kiếm" onChange={(e) => { search(e.nativeEvent.text) }} />
+              </View>
+              <SelectDropdown
+                ref={dropdownRef}
+                data={[
+                  'Khoa A đến Z',
+                  'Khoa Z đến A',
+                ]}
+                onSelect={(selectedItem, index) => {
+                  sort(index);
+                }}
+                defaultButtonText={
+                  <MaterialIcons name="sort" size={24} color="black" />
+                }
+                buttonTextAfterSelection={() => {
+                  return <MaterialIcons name="sort" size={24} color="black" />;
+                }}
+                buttonStyle={{
+                  width: '15%',
+                  height: 30,
+                  backgroundColor: 'white',
+                }}
+                buttonTextStyle={{
+                  fontSize: 14,
+                  color: 'black',
+                }}
+                dropdownStyle={{
+                  height: 80,
+                  width: 200,
+                  backgroundColor: 'white',
+                  marginLeft: -105,
+                }}
+                dropdownOverlayColor="rgba(0,0,0,0)"
+                selectedRowTextStyle={{
+                  color: '#003893',
+                  fontWeight: 'bold',
+                }}
+                rowStyle={{
+                  height: 40,
+                  backgroundColor: 'white',
+                  paddingLeft: 10,
+                }}
+                rowTextStyle={{
+                  fontSize: 14,
+                  color: 'black',
+                  textAlign: 'left',
+                }}
+              />
+            </View>
+            <ScrollView style={styles.containerMain}>
+              {listSpecialtyFilter.map((item, index) => (
+                <SpecialityItemOfHome
+                  key={index}
+                  specialty={item}
+                  handleClickModal={() => handleClickModal(item)}
+                />
+              ))}
+            </ScrollView>
+            {renderModal()}
           </View>
-          <SelectDropdown
-            ref={dropdownRef}
-            data={[
-              'Khoa A đến Z',
-              'Khoa Z đến A',
-            ]}
-            onSelect={(selectedItem, index) => {
-              sort(index);
-            }}
-            defaultButtonText={
-              <MaterialIcons name="sort" size={24} color="black" />
-            }
-            buttonTextAfterSelection={() => {
-              return <MaterialIcons name="sort" size={24} color="black" />;
-            }}
-            buttonStyle={{
-              width: '15%',
-              height: 30,
-              backgroundColor: 'white',
-            }}
-            buttonTextStyle={{
-              fontSize: 14,
-              color: 'black',
-            }}
-            dropdownStyle={{
-              height: 80,
-              width: 200,
-              backgroundColor: 'white',
-              marginLeft: -105,
-            }}
-            dropdownOverlayColor="rgba(0,0,0,0)"
-            selectedRowTextStyle={{
-              color: '#003893',
-              fontWeight: 'bold',
-            }}
-            rowStyle={{
-              height: 40,
-              backgroundColor: 'white',
-              paddingLeft: 10,
-            }}
-            rowTextStyle={{
-              fontSize: 14,
-              color: 'black',
-              textAlign: 'left',
-            }}
-          />
-        </View>
-        <ScrollView style={styles.containerMain}>
-          {loading && (
-            <ActivityIndicator size="large" color={Colors.BLUE} />
-          )}
-          {listSpecialtyFilter.map((item, index) => (
-            <SpecialityItem
-              key={index}
-              specialty={item}
-              handleClickModal={() => handleClickModal(item)}
-            />
-          ))}
-        </ScrollView>
-        {renderModal()}
-      </View>
+      }
     </View>
   );
 }

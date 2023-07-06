@@ -1,19 +1,30 @@
 import { StyleSheet } from 'react-native';
-import { Fonts, Colors } from '../../constants';
+import { Colors } from '../../constants';
 
 export const styles = StyleSheet.create({
   container: {
-    height: 90,
     position: 'relative',
     backgroundColor: Colors.WHITE,
     borderRadius: 12,
-    // borderWidth: 0.5,
     borderColor: Colors.DEFAULT_LIGHT_CORLOR,
     marginTop: 12,
-    padding: 10,
-    // justifyContent: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 15,
     borderColor: "black",
   },
+  textNameSpeciality: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: Colors.BLACK,
+    marginBottom: 5,
+  },
+  textDescription: {
+    fontSize: 14,
+    color: Colors.BLACK,
+    marginBottom: 5,
+    lineHeight: 20,
+  },
+
   btnInfo: {
     width: 25,
     height: 25,

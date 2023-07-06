@@ -22,7 +22,6 @@ function MedicalRecord({ navigation }) {
           console.error(error);
         }
       };
-
       fetchMedicalRecord();
     }, []),
   );

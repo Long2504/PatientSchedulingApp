@@ -173,10 +173,6 @@ const Profile = () => {
                 <RadioButton value="nu" />
                 <Text>Nữ</Text>
               </View>
-              <View style={styles.radioBtnItem}>
-                <RadioButton value="khac" />
-                <Text>Khác</Text>
-              </View>
             </RadioButton.Group>
           </View>
         </View>

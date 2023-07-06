@@ -43,7 +43,7 @@ function BottomTab() {
       }}
     >
       <Tab.Screen
-        name="Home"
+        name="HomeNavigator"
         component={HomeNavigator}
         options={{
           tabBarLabel: "Trang chủ",
@@ -57,7 +57,7 @@ function BottomTab() {
         }}
       />
       <Tab.Screen
-        name="Appointment"
+        name="AppointmentNavigator"
         component={AppointmentNavigator}
         options={{
           tabBarLabel: "Đặt lịch",
@@ -71,7 +71,7 @@ function BottomTab() {
         }}
       />
       <Tab.Screen
-        name="MedicalRecord"
+        name="MedicalRecordNavigator"
         component={MedicalRecordNavigator}
         options={{
           tabBarLabel: "Bệnh án",
