@@ -23,6 +23,17 @@ export const getScheduleByDoctor = createAsyncThunk('schedule/get-schedule-docto
   }
 });
 
+export const getScheduleByIdPatient = createAsyncThunk('schedule/get-schedule-patient', async (body, { rejectWithValue }) => {
+  try {
+    console.log(body);
+    const { data } = await ApiCallerPrivate('patient/get-schedule-by-id-patient', 'POST', body);
+    console.log(data);
+    return data;
+  } catch (error) {
+    return rejectWithValue(handleErrors(error));
+  }
+});
+
 export const createAppointmentSchedule = createAsyncThunk('schedule/create-schedule', async (body, { rejectWithValue }) => {
   try {
     const { data } = await ApiCallerPrivate('patient/create-schedule', 'POST', body);

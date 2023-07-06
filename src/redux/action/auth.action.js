@@ -3,6 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiCallerPublic, ApiCallerPrivate } from "../../services/ApiCaller";
 import Auth from "../../utils/helper/auth.helper";
 import { handleErrors } from "../../utils/helper/common.helper";
+import { Alert } from "react-native";
 
 
 export const Register = createAsyncThunk('auth/signup', async (body, { rejectWithValue }) => {
@@ -82,6 +83,7 @@ export const getInfor = createAsyncThunk('auth/getInfor', async () => {
 export const changePassword = createAsyncThunk('auth/changePassword', async (body, { rejectWithValue }) => {
   try {
     const { data } = await ApiCallerPrivate('auth/change-password', 'POST', body);
+    Alert.alert('Thông báo', 'Đổi mật khẩu thành công');
     return data;
   } catch (error) {
     return rejectWithValue(handleErrors(error));

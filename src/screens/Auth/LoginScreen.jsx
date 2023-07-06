@@ -49,6 +49,7 @@ const LoginScreen = ({ navigation: { navigate } }) => {
       hideSubscription.remove();
     };
   }, []);
+  
   useEffect(() => {
     if (IS_ANDROID) {
       LayoutAnimation.configureNext({

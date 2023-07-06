@@ -13,6 +13,7 @@ import { updatePatient } from "../../redux/action/patient.action";
 
 const Profile = () => {
   const { inforUser } = useSelector((state) => state.authSlice);
+
   const [isModalVisible, setModalVisible] = useState(false);
   const [profile, setProfile] = useState({
     name: '',
@@ -32,9 +33,11 @@ const Profile = () => {
 
   const dispatch = useDispatch();
   const [check, setCheck] = useState(false);
+
   useEffect(() => {
     dispatch(getInfor());
   }, []);
+
   useEffect(() => {
     if (inforUser) {
       setProfile({
@@ -122,7 +125,6 @@ const Profile = () => {
   const handleComfirm = () => {
     dispatch(updatePatient(profile));
     setCheck(!check);
-    // console.log(profile);
   }
 
   return (

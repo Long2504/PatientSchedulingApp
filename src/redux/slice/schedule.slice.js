@@ -1,4 +1,4 @@
-import { getScheduleBySpeciality, getScheduleByDoctor, createAppointmentSchedule } from "../action/schedule.action";
+import { getScheduleBySpeciality, getScheduleByDoctor, createAppointmentSchedule, getScheduleByIdPatient } from "../action/schedule.action";
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -8,6 +8,7 @@ const initialState = {
   speciality: {},
   doctor: {},
   appointmentDate: null,
+  listSchedulePatient: [],
 };
 
 
@@ -64,6 +65,22 @@ export const scheduleSlice = createSlice({
       state.error = payload.error;
       state.loading = false;
       state.appointmentDate = null;
+    }
+    );
+    builder.addCase(getScheduleByIdPatient.pending, (state) => {
+      state.loading = true;
+      state.listSchedulePatient = [];
+    }
+    );
+    builder.addCase(getScheduleByIdPatient.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.listSchedulePatient = payload;
+    }
+    );
+    builder.addCase(getScheduleByIdPatient.rejected, (state, { payload }) => {
+      state.error = payload;
+      state.loading = false;
+      state.listSchedulePatient = [];
     }
     );
   }

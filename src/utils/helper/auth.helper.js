@@ -24,13 +24,16 @@ Auth.getIdPatient = async () => {
   }
 };
 
+
 Auth.getUserInfo = async () => {
   try {
     let email = await AsyncStorage.getItem(LOCAL.EMAIL_USER);
     email = JSON.parse(email);
+    let userID = await AsyncStorage.getItem(LOCAL.ID_USER);
+    userID = JSON.parse(userID);
     let patient = await AsyncStorage.getItem(LOCAL.PATIENT_INFO);
     patient = JSON.parse(patient);
-    return { ...patient, email }
+    return { ...patient, email, userID }
   }
   catch (error) {
     console.error('Error getting userInfo', error);
@@ -44,6 +47,7 @@ Auth.checkLogged = async () => {
 };
 
 Auth.setInfo = async data => {
+  console.log("data", data);
   try {
     await AsyncStorage.multiRemove([LOCAL.TOKEN, LOCAL.PATIENT_INFO, LOCAL.ID_USER, LOCAL.EMAIL_USER]);
     await AsyncStorage.setItem(LOCAL.TOKEN, JSON.stringify(data.accessToken));

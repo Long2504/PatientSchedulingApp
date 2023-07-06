@@ -54,7 +54,8 @@ export const styles = StyleSheet.create({
     marginTop: 20,
   },
   modalContainer: {
-    flex: 1,
+    width: 200,
+    height: 200,
     backgroundColor: Colors.BLACK_OPACITY_50,
     alignItems: 'center',
     justifyContent: 'center',

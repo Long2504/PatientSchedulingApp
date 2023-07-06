@@ -18,7 +18,6 @@ import { setSpeciality } from '../../redux/slice/schedule.slice';
 
 
 const Appointment = ({ navigation: { navigate } }) => {
-
   const { speciality, doctor, listSchedule, error } = useSelector(state => state.scheduleSlice);
   const dayTomorrow = moment().add(1, 'days').format('dddd');
   const dateTomorrow = moment().add(1, 'days').format('DD');
